@@ -49,59 +49,7 @@
       50% { opacity: 0.7; }
     }
 
-    /* استایل‌های جدید برای اشتراک‌گذاری */
-    .share-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-    }
-
-    .share-modal-content {
-      background: white;
-      border-radius: 24px;
-      padding: 30px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .share-option {
-      display: flex;
-      align-items: center;
-      padding: 16px;
-      border: 2px solid #e5e7eb;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .share-option:hover {
-      border-color: #00a0b0;
-      background-color: #f0f9ff;
-      transform: translateY(-2px);
-    }
-
-    .share-option-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-left: 16px;
-    }
-
+    /* استایل‌های جدید برای دانلود تصویر */
     .copy-notification {
       position: fixed;
       bottom: 30px;
@@ -162,72 +110,6 @@
 </head>
 <body class="w-full min-h-full">
   <div id="app" class="w-full min-h-full"></div>
-  
-  <!-- افزودن دیالوگ اشتراک‌گذاری -->
-  <div id="shareModal" class="share-modal hidden">
-    <div class="share-modal-content fade-in">
-      <div class="flex justify-between items-center mb-8">
-        <h3 class="font-bold text-xl" style="color: #1A1A1A;">🔄 اشتراک‌گذاری نتایج</h3>
-        <button onclick="closeShareModal()" class="text-2xl p-2 hover:bg-gray-100 rounded-full transition-colors">×</button>
-      </div>
-      
-      <div class="space-y-4">
-        <div class="share-option" onclick="shareAsLink()">
-          <div class="share-option-icon" style="background-color: #3b82f6; color: white;">
-            🔗
-          </div>
-          <div>
-            <h4 class="font-bold text-lg">اشتراک لینک</h4>
-            <p class="text-gray-600 text-sm mt-1">ایجاد لینک قابل اشتراک از نتایج شما</p>
-          </div>
-        </div>
-        
-        <div class="share-option" onclick="shareAsImage()">
-          <div class="share-option-icon" style="background-color: #10b981; color: white;">
-            📷
-          </div>
-          <div>
-            <h4 class="font-bold text-lg">دانلود تصویر</h4>
-            <p class="text-gray-600 text-sm mt-1">ذخیره نتایج به عنوان تصویر با کیفیت</p>
-          </div>
-        </div>
-        
-        <div class="share-option" onclick="shareAsPDF()">
-          <div class="share-option-icon" style="background-color: #ef4444; color: white;">
-            📄
-          </div>
-          <div>
-            <h4 class="font-bold text-lg">دانلود PDF</h4>
-            <p class="text-gray-600 text-sm mt-1">ذخیره نتایج به صورت PDF قابل چاپ</p>
-          </div>
-        </div>
-        
-        <div class="share-option" onclick="copyToClipboard()">
-          <div class="share-option-icon" style="background-color: #8b5cf6; color: white;">
-            📋
-          </div>
-          <div>
-            <h4 class="font-bold text-lg">کپی متن</h4>
-            <p class="text-gray-600 text-sm mt-1">کپی خلاصه نتایج برای اشتراک در شبکه‌های اجتماعی</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="mt-8 pt-6 border-t border-gray-200">
-        <h4 class="font-bold text-lg mb-3">🔗 لینک مستقیم</h4>
-        <div class="flex gap-2">
-          <input type="text" id="shareLinkInput" readonly 
-            class="flex-1 p-3 border border-gray-300 rounded-xl bg-gray-50 text-sm"
-            value="در حال بارگذاری...">
-          <button onclick="copyShareLink()" 
-            class="px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
-            کپی
-          </button>
-        </div>
-        <p class="text-gray-500 text-xs mt-2">این لینک 30 روز معتبر است</p>
-      </div>
-    </div>
-  </div>
 
   <script>
     const defaultConfig = {
@@ -928,7 +810,6 @@
     let userAnswers = {};
     let generatedContent = [];
     let isLoggedIn = false;
-    let shareId = null;
 
     const questions = [
       {
@@ -983,202 +864,7 @@
       }
     ];
 
-    // تابع‌های جدید برای اشتراک‌گذاری
-    function generateShareId() {
-      return 'share_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function saveToLocalStorage() {
-      shareId = generateShareId();
-      const shareData = {
-        userAnswers: userAnswers,
-        generatedContent: generatedContent,
-        timestamp: new Date().toISOString(),
-        shareId: shareId
-      };
-      localStorage.setItem(shareId, JSON.stringify(shareData));
-      
-      // همچنین برای دسترسی آسان‌تر
-      localStorage.setItem('lastShareId', shareId);
-      
-      // تنظیم لینک اشتراک‌گذاری
-      const shareUrl = `${window.location.origin}${window.location.pathname}?share=${shareId}`;
-      document.getElementById('shareLinkInput').value = shareUrl;
-      
-      return shareUrl;
-    }
-
-    function loadFromLocalStorage(shareId) {
-      const savedData = localStorage.getItem(shareId);
-      if (savedData) {
-        try {
-          const data = JSON.parse(savedData);
-          userAnswers = data.userAnswers || {};
-          generatedContent = data.generatedContent || [];
-          return true;
-        } catch (e) {
-          console.error('Error loading saved data:', e);
-        }
-      }
-      return false;
-    }
-
-    function showShareModal() {
-      const shareModal = document.getElementById('shareModal');
-      shareModal.classList.remove('hidden');
-      // ایجاد لینک اشتراک‌گذاری
-      const shareUrl = saveToLocalStorage();
-      document.getElementById('shareLinkInput').value = shareUrl;
-    }
-
-    function closeShareModal() {
-      const shareModal = document.getElementById('shareModal');
-      shareModal.classList.add('hidden');
-    }
-
-    function shareAsLink() {
-      const shareUrl = saveToLocalStorage();
-      
-      // اگر Web Share API پشتیبانی می‌شود
-      if (navigator.share) {
-        navigator.share({
-          title: 'نتایج تقویم محتوای اینستاگرام من',
-          text: 'من تقویم محتوای اینستاگرام خود را ایجاد کردم. برای مشاهده این لینک را ببینید:',
-          url: shareUrl,
-        })
-        .then(() => showCopyNotification('نتایج با موفقیت به اشتراک گذاشته شد!'))
-        .catch((error) => {
-          // اگر کاربر اشتراک‌گذاری را لغو کرد، لینک را در کلیپ‌بورد کپی کن
-          copyToClipboard();
-        });
-      } else {
-        // اگر Web Share API پشتیبانی نمی‌شود
-        copyToClipboard();
-      }
-    }
-
-    function shareAsImage() {
-      showLoading('در حال ایجاد تصویر از نتایج...');
-      
-      // انتخاب بخشی که باید تصویر بگیرد
-      const resultsContent = document.querySelector('#results-content');
-      
-      html2canvas(resultsContent, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        logging: false,
-        onclone: function(clonedDoc) {
-          // می‌توانیم در اینجا تغییرات لازم را روی نسخه کلون شده اعمال کنیم
-        }
-      }).then(canvas => {
-        hideLoading();
-        
-        // ایجاد لینک دانلود
-        const link = document.createElement('a');
-        link.download = `تقویم-محتوای-اینستاگرام-${new Date().toLocaleDateString('fa-IR')}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
-      }).catch(error => {
-        hideLoading();
-        console.error('Error generating image:', error);
-        showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
-      });
-    }
-
-    function shareAsPDF() {
-      showLoading('در حال ایجاد فایل PDF...');
-      
-      const resultsContent = document.querySelector('#results-content');
-      
-      html2canvas(resultsContent, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff'
-      }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgWidth = 210; // A4 width in mm
-        const pageHeight = 295; // A4 height in mm
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        
-        let heightLeft = imgHeight;
-        let position = 0;
-        
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-        
-        pdf.save(`تقویم-محتوای-اینستاگرام-${new Date().toLocaleDateString('fa-IR')}.pdf`);
-        hideLoading();
-        showCopyNotification('فایل PDF با موفقیت دانلود شد!');
-      }).catch(error => {
-        hideLoading();
-        console.error('Error generating PDF:', error);
-        showCopyNotification('خطا در ایجاد PDF. لطفاً دوباره امتحان کنید.');
-      });
-    }
-
-    function copyToClipboard() {
-      const shareUrl = saveToLocalStorage();
-      
-      // ایجاد متن خلاصه برای اشتراک
-      const summary = `📅 **تقویم محتوای اینستاگرام من** 📅
-    
-صنعت: ${userAnswers.industry || 'تعریف نشده'}
-تعداد محتواهای تولید شده: ${generatedContent.length}
-    
-برای مشاهده کامل نتایج این لینک را ببینید:
-${shareUrl}
-    
-ساخته شده با Koosha co 🚀`;
-      
-      navigator.clipboard.writeText(summary)
-        .then(() => showCopyNotification('متن نتایج در کلیپ‌بورد کپی شد!'))
-        .catch(err => {
-          console.error('Error copying text: ', err);
-          showCopyNotification('خطا در کپی متن. لطفاً دوباره امتحان کنید.');
-        });
-    }
-
-    function copyShareLink() {
-      const shareLinkInput = document.getElementById('shareLinkInput');
-      shareLinkInput.select();
-      shareLinkInput.setSelectionRange(0, 99999);
-      
-      navigator.clipboard.writeText(shareLinkInput.value)
-        .then(() => showCopyNotification('لینک در کلیپ‌بورد کپی شد!'))
-        .catch(err => {
-          console.error('Error copying link: ', err);
-          // روش جایگزین برای قدیمی‌ترها
-          document.execCommand('copy');
-          showCopyNotification('لینک کپی شد!');
-        });
-    }
-
-    function showCopyNotification(message) {
-      const notification = document.createElement('div');
-      notification.className = 'copy-notification';
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translate(-50%, 20px)';
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
-      }, 3000);
-    }
-
+    // توابع برای دانلود تصویر
     function showLoading(message) {
       let loadingDiv = document.getElementById('loading-overlay');
       if (!loadingDiv) {
@@ -1205,44 +891,119 @@ ${shareUrl}
       }
     }
 
-    // بررسی پارامتر share در URL
-    function checkForShareParameter() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const shareParam = urlParams.get('share');
+    function showCopyNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'copy-notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
       
-      if (shareParam) {
-        if (loadFromLocalStorage(shareParam)) {
-          isLoggedIn = true;
-          generateContent();
-          renderResults();
-          return true;
-        }
-      }
-      return false;
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translate(-50%, 20px)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
     }
 
-    // بارگذاری کتابخانه jsPDF برای ایجاد PDF
-    function loadJSPDF() {
-      return new Promise((resolve, reject) => {
-        if (typeof jsPDF !== 'undefined') {
-          resolve();
-          return;
+    function downloadImage() {
+      showLoading('در حال ایجاد تصویر از نتایج...');
+      
+      // کل صفحه نتایج را بگیریم
+      const resultsContainer = document.querySelector('.w-full.max-w-7xl');
+      
+      if (!resultsContainer) {
+        hideLoading();
+        showCopyNotification('خطا: بخش نتایج یافت نشد.');
+        return;
+      }
+      
+      // ذخیره استایل اصلی
+      const originalBackground = resultsContainer.style.background;
+      const originalMargin = resultsContainer.style.margin;
+      const originalPadding = resultsContainer.style.padding;
+      
+      // تنظیم استایل‌های موقت برای تصویر بهتر
+      resultsContainer.style.background = '#ffffff';
+      resultsContainer.style.margin = '0 auto';
+      resultsContainer.style.padding = '40px 20px';
+      resultsContainer.style.width = '100%';
+      resultsContainer.style.maxWidth = '1000px';
+      
+      html2canvas(resultsContainer, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: resultsContainer.scrollWidth,
+        windowHeight: resultsContainer.scrollHeight,
+        onclone: function(clonedDoc) {
+          // می‌توانیم در اینجا تغییرات لازم را روی نسخه کلون شده اعمال کنیم
+          const clonedContainer = clonedDoc.querySelector('.w-full.max-w-7xl');
+          if (clonedContainer) {
+            clonedContainer.style.background = '#ffffff';
+            clonedContainer.style.margin = '0 auto';
+            clonedContainer.style.padding = '40px 20px';
+            clonedContainer.style.width = '100%';
+            clonedContainer.style.maxWidth = '1000px';
+            
+            // اضافه کردن هدر برای تصویر
+            const header = clonedDoc.createElement('div');
+            header.innerHTML = `
+              <div style="text-align: center; padding: 30px; background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: white; border-radius: 20px; margin-bottom: 30px;">
+                <h1 style="font-size: 28px; margin-bottom: 10px; font-weight: bold;">📅 تقویم محتوای پایه هفتگی 📅</h1>
+                <p style="font-size: 18px; opacity: 0.95;">ساخته شده با Koosha co</p>
+                <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
+              </div>
+            `;
+            clonedContainer.insertBefore(header, clonedContainer.firstChild);
+            
+            // اضافه کردن فوتر برای تصویر
+            const footer = clonedDoc.createElement('div');
+            footer.innerHTML = `
+              <div style="text-align: center; padding: 20px; margin-top: 30px; color: #666; font-size: 14px; border-top: 2px solid #eee;">
+                <p>برای اطلاعات بیشتر به koosha.co مراجعه کنید</p>
+              </div>
+            `;
+            clonedContainer.appendChild(footer);
+          }
         }
+      }).then(canvas => {
+        // بازگرداندن استایل اصلی
+        resultsContainer.style.background = originalBackground;
+        resultsContainer.style.margin = originalMargin;
+        resultsContainer.style.padding = originalPadding;
+        resultsContainer.style.width = '';
+        resultsContainer.style.maxWidth = '';
         
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
+        // ایجاد لینک دانلود
+        const link = document.createElement('a');
+        const date = new Date().toLocaleDateString('fa-IR').replace(/\//g, '-');
+        link.download = `تقویم-محتوای-اینستاگرام-${date}.png`;
+        link.href = canvas.toDataURL('image/png');
+        
+        // تریگر دانلود
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        hideLoading();
+        showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
+      }).catch(error => {
+        // بازگرداندن استایل اصلی در صورت خطا
+        resultsContainer.style.background = originalBackground;
+        resultsContainer.style.margin = originalMargin;
+        resultsContainer.style.padding = originalPadding;
+        resultsContainer.style.width = '';
+        resultsContainer.style.maxWidth = '';
+        
+        hideLoading();
+        console.error('Error generating image:', error);
+        showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
       });
     }
 
     function renderLogin() {
-      // ابتدا بررسی کن آیا پارامتر اشتراک در URL وجود دارد
-      if (checkForShareParameter()) {
-        return; // اگر داده‌های اشتراک لود شد، لاگین را نشان نده
-      }
-      
       const app = document.getElementById('app');
       app.innerHTML = `
         <div class="w-full h-screen flex items-center justify-center instagram-gradient">
@@ -1447,11 +1208,11 @@ ${shareUrl}
                 <p class="font-medium" style="color: ${config.secondary_color}; opacity: 0.95; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;">متناسب با ساختار اینستاگرام</p>
               </div>
               <button 
-                onclick="showShareModal()"
+                onclick="downloadImage()"
                 class="px-6 py-3 rounded-xl font-bold transition-all hover:shadow-lg flex items-center gap-2"
                 style="background: ${config.secondary_color}; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; border: 2px solid #050120;"
               >
-                <span>🔄 اشتراک‌گذاری</span>
+                <span>📷 دانلود تصویر</span>
               </button>
             </div>
 
@@ -1518,11 +1279,11 @@ ${shareUrl}
                 
                 <div class="flex flex-wrap justify-center gap-4 mt-8">
                   <button 
-                    onclick="showShareModal()"
+                    onclick="downloadImage()"
                     class="px-8 py-4 rounded-xl transition-all hover:shadow-xl flex items-center gap-2 font-bold"
                     style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: ${config.secondary_color}; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;"
                   >
-                    🔄 اشتراک‌گذاری نتایج
+                    📷 دانلود تصویر نتایج
                   </button>
                   
                   <button 
@@ -1552,22 +1313,7 @@ ${shareUrl}
     window.selectOption = selectOption;
     window.previousStep = previousStep;
     window.startOver = startOver;
-    window.showShareModal = showShareModal;
-    window.closeShareModal = closeShareModal;
-    window.shareAsLink = shareAsLink;
-    window.shareAsImage = shareAsImage;
-    window.shareAsPDF = shareAsPDF;
-    window.copyToClipboard = copyToClipboard;
-    window.copyShareLink = copyShareLink;
-
-    // بارگذاری اولیه jsPDF
-    loadJSPDF().catch(err => {
-      console.warn('Failed to load jsPDF:', err);
-      // در صورت عدم بارگذاری jsPDF، دکمه PDF را غیرفعال می‌کنیم
-      window.shareAsPDF = function() {
-        showCopyNotification('امکان ایجاد PDF در حال حاضر وجود ندارد. لطفاً از گزینه تصویر استفاده کنید.');
-      };
-    });
+    window.downloadImage = downloadImage;
 
     async function onConfigChange(newConfig) {
       Object.assign(config, newConfig);
