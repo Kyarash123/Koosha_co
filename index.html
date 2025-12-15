@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
+    <link rel="icon" href="./koosha-co-logo.png" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Koosha co</title>
@@ -8,11 +9,13 @@
   <script src="/_sdk/element_sdk.js"></script>
   <!-- اضافه کردن html2canvas برای گرفتن اسکرین‌شات -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <!-- اضافه کردن فونت به صورت محلی -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap">
   <style>
     body {
       box-sizing: border-box;
+      font-family: 'Vazirmatn', sans-serif;
     }
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
     
     * {
       font-family: 'Vazirmatn', sans-serif;
@@ -104,6 +107,47 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* استایل‌های ثابت برای html2canvas */
+    .image-container {
+      width: 1000px !important;
+      background: #ffffff !important;
+      padding: 40px !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+      direction: rtl !important;
+    }
+
+    .image-card {
+      background: #ffffff !important;
+      border: 2px solid #050120 !important;
+      border-radius: 24px !important;
+      padding: 24px !important;
+      margin-bottom: 20px !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+    }
+
+    .image-header {
+      background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%) !important;
+      color: white !important;
+      padding: 20px !important;
+      border-radius: 16px !important;
+      text-align: center !important;
+      margin-bottom: 30px !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+    }
+
+    .image-title {
+      font-size: 24px !important;
+      font-weight: bold !important;
+      margin-bottom: 10px !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+    }
+
+    .image-subtitle {
+      font-size: 16px !important;
+      opacity: 0.9 !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -113,8 +157,8 @@
 
   <script>
     const defaultConfig = {
-      app_title: "تولید محتوای اینستاگرام",
-      login_password: "koosha2025",
+      app_title: "کوشا کمپانی",
+      login_password: "koosha",
       logo_text: "Koosha co",
       primary_color: "#00a0b0",
       secondary_color: "#FFFFFF",
@@ -183,7 +227,7 @@
           },
           {
             name: "پیشنهاد_ویژه",
-            structure: "فوریت (محدودیت زمانی) + ارزش (تخفیف/هدیه) + اعتمادساز + CTA قوی",
+            structure: "فوریت (معدودیت زمانی) + ارزش (تخفیف/هدیه) + اعتمادساز + CTA قوی",
             best_day: "پنجشنبه",
             best_time: "18:00-20:00",
             cta: ["لینک در بایو", "الان سفارش بده", "موجودی محدوده"]
@@ -534,278 +578,6 @@
       }
     };
 
-    contentStrategies["هنر و سرگرمی"] = {
-      hooks: [
-        "🎨 {timeframe} برای یادگیری {skill}",
-        "✨ تکنیکی که {famous_artist} استفاده می‌کند",
-        "🖌️ از {beginner} تا {expert} در {number} قدم",
-        "💡 رازی که معلم‌ها نمی‌گویند",
-        "🔥 کاری که {number} میلیون بازدید خورد",
-        "🌟 چالش هنری: می‌تونی؟",
-        "⚡ ابزار {price} تومانی که معجزه می‌کنه"
-      ],
-      content_types: [
-        {
-          name: "تایم_لپس_خلق_اثر",
-          structure: "پروسه کامل + ابزار استفاده شده + زمان واقعی + نکات کلیدی",
-          best_day: "چهارشنبه",
-          best_time: "20:00-22:00",
-          cta: ["ویدیو کامل در یوتیوب", "می‌خوای یاد بگیری؟", "دوره‌های ما در بایو"]
-        },
-        {
-          name: "آموزش_تکنیک",
-          structure: "تکنیک + ابزار لازم + مراحل تصویری + اشتباهات رایج + تمرین پیشنهادی",
-          best_day: "شنبه",
-          best_time: "14:00-16:00",
-          cta: ["سیو کن و تمرین کن", "کارت را تگ کن", "نتیجه را بفرست"]
-        },
-        {
-          name: "چالش_هنری",
-          structure: "موضوع چالش + قوانین + مدت زمان + نحوه شرکت + جوایز",
-          best_day: "یکشنبه",
-          best_time: "10:00-12:00",
-          cta: ["شرکت می‌کنی؟ هشتگ کن", "کارت را منشن کن", "برندگان را اعلام می‌کنیم"]
-        },
-        {
-          name: "پشت_صحنه_کار",
-          structure: "ایده اولیه + پروسه + چالش‌ها + حل مشکل + نتیجه نهایی",
-          best_day: "سه‌شنبه",
-          best_time: "19:00-21:00",
-          cta: ["دوست داری بیشتر ببینی؟", "فالو کن", "سوال داری بپرس"]
-        },
-        {
-          name: "مقایسه_ابزار_هنری",
-          structure: "ابزار مبتدی vs حرفه‌ای + قیمت + کیفیت + مناسب برای چه کاری",
-          best_day: "دوشنبه",
-          best_time: "11:00-13:00",
-          cta: ["کدوم را داری؟", "پیشنهاد می‌خوای؟", "لینک خرید در بایو"]
-        },
-        {
-          name: "الهام_روزانه",
-          structure: "اثر الهام‌بخش + تحلیل + چرا خاصه + درس قابل یادگیری",
-          best_day: "پنجشنبه",
-          best_time: "16:00-18:00",
-          cta: ["ذخیره کن برای الهام", "نظرت چیه؟", "هنرمندت کیه؟"]
-        },
-        {
-          name: "پروژه_شخصی",
-          structure: "معرفی کار + داستان پشت اثر + پیام اثر + واکنش‌ها + در دسترس بودن",
-          best_day: "جمعه",
-          best_time: "18:00-20:00",
-          cta: ["نظرت چیه؟", "سفارش می‌پذیریم", "پرتفولیو کامل در بایو"]
-        }
-      ],
-      hashtag_strategy: {
-        primary: ["هنر", "نقاشی", "خلاقیت"],
-        secondary: ["آموزش_هنر", "هنرمند", "اثر_هنری"],
-        niche: []
-      }
-    };
-
-    contentStrategies["خدمات مالی"] = {
-      hooks: [
-        "💰 {percentage}% مردم این اشتباه را می‌کنند",
-        "📊 چگونه {amount} تومان پس‌انداز کنید",
-        "⚠️ قبل از سرمایه‌گذاری این را بدانید",
-        "✅ {number} قدم تا آزادی مالی",
-        "🔍 حقیقتی که بانک‌ها نمی‌گویند",
-        "💡 راهی که {percentage}% بازده داد",
-        "⏰ شروع از امروز، نتیجه {timeframe} دیگر"
-      ],
-      content_types: [
-        {
-          name: "نکته_سرمایه_گذاری",
-          structure: "مفهوم ساده + مثال واقعی + ریسک + بازده + مناسب برای چه کسی",
-          best_day: "شنبه",
-          best_time: "09:00-11:00",
-          cta: ["سوال داری بپرس", "مشاوره رایگان", "سیو کن"]
-        },
-        {
-          name: "اشتباه_رایج_مالی",
-          structure: "اشتباه + چرا مضره + آمار + راه حل + قدم اول",
-          best_day: "دوشنبه",
-          best_time: "10:00-12:00",
-          cta: ["این اشتباه را می‌کنی؟", "کامنت کن", "راهنما در بایو"]
-        },
-        {
-          name: "مقایسه_گزینه‌های_سرمایه",
-          structure: "گزینه A vs B + جدول مقایسه + ریسک + بازده + افق زمانی",
-          best_day: "چهارشنبه",
-          best_time: "14:00-16:00",
-          cta: ["کدوم را انتخاب می‌کنی؟", "نیاز به مشاوره؟", "کامنت کن"]
-        },
-        {
-          name: "برنامه_پس_انداز",
-          structure: "هدف + مدت زمان + مبلغ ماهیانه + استراتژی + ابزار کمکی",
-          best_day: "یکشنبه",
-          best_time: "11:00-13:00",
-          cta: ["ماشین‌حساب رایگان در بایو", "شروع کن امروز", "سیو کن"]
-        },
-        {
-          name: "تحلیل_بازار",
-          structure: "وضعیت فعلی + تحلیل + پیش‌بینی + توصیه عملی + منابع",
-          best_day: "سه‌شنبه",
-          best_time: "15:00-17:00",
-          cta: ["موافقی؟", "نظر تحلیلگر در بایو", "گزارش کامل"]
-        },
-        {
-          name: "قانون_طلایی_مالی",
-          structure: "قانون + توضیح + مثال عددی + چگونگی اجرا + نتایج",
-          best_day: "پنجشنبه",
-          best_time: "10:00-12:00",
-          cta: ["سیو کن", "به کار ببند", "نتیجه را بگو"]
-        },
-        {
-          name: "داستان_موفقیت_مالی",
-          structure: "نقطه شروع + استراتژی + چالش‌ها + نتیجه + درس آموخته",
-          best_day: "جمعه",
-          best_time: "16:00-18:00",
-          cta: ["تو هم می‌تونی", "داستان تو چیه؟", "مشاوره شخصی در بایو"]
-        }
-      ],
-      hashtag_strategy: {
-        primary: ["مالی", "سرمایه_گذاری", "پس_انداز"],
-        secondary: ["بورس", "اقتصاد", "موفقیت_مالی"],
-        niche: []
-      }
-    };
-
-    contentStrategies["گردشگری و مسافرت"] = {
-      hooks: [
-        "✈️ {destination} با {budget} تومان",
-        "🗺️ جاهایی که {percentage}% نمی‌دانند",
-        "📸 اینستاگرام‌پذیرترین نقطه {location}",
-        "💡 {number} نکته قبل از سفر به {destination}",
-        "🎒 چک لیست سفر {number} روزه",
-        "⚠️ اشتباهاتی که در {destination} نکنید",
-        "🌟 تجربه‌ای که فراموش نمی‌شود"
-      ],
-      content_types: [
-        {
-          name: "گاید_مقصد",
-          structure: "معرفی مکان + بهترین زمان + بودجه + جاذبه‌ها + نکات عملی",
-          best_day: "چهارشنبه",
-          best_time: "20:00-22:00",
-          cta: ["سیو کن برای سفر", "رفتی؟ تگ کن", "گاید کامل PDF در بایو"]
-        },
-        {
-          name: "بودجه_بندی_سفر",
-          structure: "مقصد + مدت + جدول هزینه‌ها + نکات صرفه‌جویی + جمع کل",
-          best_day: "شنبه",
-          best_time: "10:00-12:00",
-          cta: ["ماشین‌حساب سفر در بایو", "سوال داری؟", "تجربه‌ات را بگو"]
-        },
-        {
-          name: "تجربه_شخصی",
-          structure: "داستان سفر + تصاویر + چالش‌ها + نکات آموخته + توصیه",
-          best_day: "یکشنبه",
-          best_time: "19:00-21:00",
-          cta: ["کجا بوده؟", "دوست داری بری؟", "پلن سفر رایگان"]
-        },
-        {
-          name: "چک_لیست_سفر",
-          structure: "نوع سفر + لیست وسایل + نکات بستن چمدان + چیزهای اضافی",
-          best_day: "دوشنبه",
-          best_time: "11:00-13:00",
-          cta: ["چاپ کن و ببر", "سیو کن", "چیزی جا موند؟"]
-        },
-        {
-          name: "مکان_مخفی",
-          structure: "معرفی مکان ناشناخته + موقعیت + دسترسی + بهترین زمان + تصاویر",
-          best_day: "سه‌شنبه",
-          best_time: "15:00-17:00",
-          cta: ["رفتی بهمون بگو", "تگ کن همسفر", "مکان‌های بیشتر در بایو"]
-        },
-        {
-          name: "مقایسه_مقاصد",
-          structure: "مقصد A vs B + بودجه + فصل + تجربه‌ها + مناسب برای چه کسی",
-          best_day: "پنجشنبه",
-          best_time: "18:00-20:00",
-          cta: ["کدوم را انتخاب می‌کنی؟", "تجربه داری؟", "پکیج تور در بایو"]
-        },
-        {
-          name: "نکات_ایمنی_و_بهداشت",
-          structure: "مقصد + ریسک‌ها + پیشگیری + بیمه + تماس‌های ضروری",
-          best_day: "جمعه",
-          best_time: "14:00-16:00",
-          cta: ["سیو کن", "امن سفر کن", "راهنمای کامل در بایو"]
-        }
-      ],
-      hashtag_strategy: {
-        primary: ["سفر", "گردشگری", "مسافرت"],
-        secondary: ["جهانگردی", "توریسم", "سفرنامه"],
-        niche: []
-      }
-    };
-
-    contentStrategies["املاک و مستغلات"] = {
-      hooks: [
-        "🏠 خانه رویایی با بودجه {amount}",
-        "📈 قیمت ملک در {location} تا {timeframe} آینده",
-        "⚠️ {number} نکته قبل از خرید خانه",
-        "💡 چگونه {percentage}% سود کنید",
-        "🔑 رازهای مذاکره موفق",
-        "📊 بهترین زمان خرید در {year}",
-        "✅ چک لیست کامل بازدید ملک"
-      ],
-      content_types: [
-        {
-          name: "معرفی_ملک",
-          structure: "تصاویر با کیفیت + متراژ و مشخصات + موقعیت + امکانات + قیمت + تماس",
-          best_day: "شنبه",
-          best_time: "10:00-12:00",
-          cta: ["بازدید رایگان", "ویدیو تور در بایو", "تماس برای اطلاعات"]
-        },
-        {
-          name: "تحلیل_بازار_منطقه",
-          structure: "منطقه + روند قیمت + پیش‌بینی + مزایا و معایب + توصیه خرید/فروش",
-          best_day: "دوشنبه",
-          best_time: "09:00-11:00",
-          cta: ["گزارش کامل رایگان", "مشاوره تخصصی", "منطقه‌های دیگر در بایو"]
-        },
-        {
-          name: "قبل_و_بعد_بازسازی",
-          structure: "تصاویر before/after + هزینه بازسازی + زمان + افزایش ارزش + نکات",
-          best_day: "چهارشنبه",
-          best_time: "19:00-21:00",
-          cta: ["ایده بازسازی می‌خوای؟", "سیو کن", "پیمانکار معرفی می‌کنیم"]
-        },
-        {
-          name: "راهنمای_خرید_اولی‌ها",
-          structure: "گام 1 تا 10 خرید خانه + مدارک + نکات قانونی + هزینه‌های جانبی",
-          best_day: "یکشنبه",
-          best_time: "11:00-13:00",
-          cta: ["PDF کامل رایگان", "مشاوره اولیه", "سیو کن"]
-        },
-        {
-          name: "اشتباهات_رایج",
-          structure: "اشتباه + عواقب مالی + چگونگی اجتناب + مثال واقعی",
-          best_day: "سه‌شنبه",
-          best_time: "10:00-12:00",
-          cta: ["این اشتباه را نکن", "مشاوره با ما", "سیو کن"]
-        },
-        {
-          name: "سرمایه_گذاری_املاک",
-          structure: "نوع سرمایه‌گذاری + بازده + ریسک + افق زمانی + نمونه محاسبه",
-          best_day: "پنجشنبه",
-          best_time: "14:00-16:00",
-          cta: ["ماشین‌حساب سود در بایو", "مشاوره سرمایه‌گذاری", "فرصت‌های روز"]
-        },
-        {
-          name: "تور_مجازی_ملک",
-          structure: "ویدیو واکینگ تور + توضیح امکانات + نکات خاص + قیمت و شرایط",
-          best_day: "جمعه",
-          best_time: "17:00-19:00",
-          cta: ["بازدید حضوری رایگان", "املاک مشابه در بایو", "تماس: ****"]
-        }
-      ],
-      hashtag_strategy: {
-        primary: ["املاک", "مستغلات", "خانه"],
-        secondary: ["خرید_خانه", "سرمایه_گذاری_املاک", "مسکن"],
-        niche: []
-      }
-    };
-
     let currentStep = 0;
     let userAnswers = {};
     let generatedContent = [];
@@ -906,101 +678,156 @@
       }, 3000);
     }
 
+    function createImageHTML() {
+      const date = new Date().toLocaleDateString('fa-IR');
+      const industry = userAnswers.industry || "صنایع غذایی";
+      
+      let imageHTML = `
+        <div class="image-container">
+          <div class="image-header">
+            <div class="image-title">📅 تقویم محتوای اینستاگرام</div>
+            <div class="image-subtitle">صنعت: ${industry} | تاریخ: ${date}</div>
+            <div class="image-subtitle">ساخته شده با Koosha co</div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; direction: rtl; font-family: 'Vazirmatn', sans-serif;">
+      `;
+      
+      generatedContent.forEach((content, index) => {
+        if (index < 7) { // فقط 7 روز هفته
+          imageHTML += `
+            <div class="image-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: bold;">${content.day}</div>
+                <div style="background: #e0f7fa; color: #006b75; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold;">${content.contentType}</div>
+              </div>
+              
+              <div style="background: #f0f9ff; padding: 12px; border-radius: 12px; margin-bottom: 12px;">
+                <div style="font-size: 11px; color: #486878; font-weight: bold; margin-bottom: 4px;">⏰ بهترین زمان انتشار</div>
+                <div style="font-size: 14px; color: #1A1A1A; font-weight: bold;">${content.bestTime}</div>
+              </div>
+              
+              <div style="background: #f9f9f9; padding: 12px; border-radius: 12px; margin-bottom: 12px; border-right: 4px solid #00a0b0;">
+                <div style="font-size: 12px; color: #006b75; font-weight: bold; margin-bottom: 6px;">🔥 هوک (Hook)</div>
+                <div style="font-size: 14px; color: #1A1A1A; line-height: 1.4;">${content.hook}</div>
+              </div>
+              
+              <div style="margin-bottom: 12px;">
+                <div style="font-size: 11px; color: #666; margin-bottom: 4px; font-weight: bold;">📝 ساختار محتوا:</div>
+                <div style="font-size: 12px; color: #444; line-height: 1.5; white-space: pre-line;">${content.content.split('\n').slice(0, 3).join('\n')}...</div>
+              </div>
+              
+              <div style="background: #050120; color: white; padding: 12px; border-radius: 12px; margin-bottom: 12px;">
+                <div style="font-size: 11px; opacity: 0.9; margin-bottom: 4px;">💬 Call To Action</div>
+                <div style="font-size: 13px; font-weight: bold;">${content.cta}</div>
+              </div>
+              
+              <div style="background: #f0f9ff; padding: 8px; border-radius: 8px; margin-bottom: 12px;">
+                <div style="font-size: 10px; color: #1A1A1A; text-align: center;">
+                  📱 ${content.format} | 🎯 ${content.engagementType}
+                </div>
+              </div>
+              
+              <div style="font-size: 11px; color: #486878; line-height: 1.6;">${content.hashtags.split(' ').slice(0, 5).join(' ')}</div>
+            </div>
+          `;
+        }
+      });
+      
+      imageHTML += `
+          </div>
+          
+          <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 16px; text-align: center;">
+            <div style="font-size: 16px; color: #1A1A1A; font-weight: bold; margin-bottom: 10px;">🎯 نکات طلایی برای موفقیت</div>
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 15px;">
+              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 12px; color: #050120; font-weight: bold; margin-bottom: 5px;">⏰ زمان‌بندی</div>
+                <div style="font-size: 10px; color: #666;">به زمان پیشنهادی پایبند باشید</div>
+              </div>
+              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 12px; color: #006b75; font-weight: bold; margin-bottom: 5px;">💬 تعامل</div>
+                <div style="font-size: 10px; color: #666;">۱۵ دقیقه اول به کامنت‌ها پاسخ دهید</div>
+              </div>
+              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 12px; color: #050120; font-weight: bold; margin-bottom: 5px;">📊 تحلیل</div>
+                <div style="font-size: 10px; color: #666;">تقویم را هفتگی بررسی و به‌روزرسانی کنید</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #666; font-size: 12px;">
+            برای اطلاعات بیشتر به koosha.co مراجعه کنید
+          </div>
+        </div>
+      `;
+      
+      return imageHTML;
+    }
+
     function downloadImage() {
       showLoading('در حال ایجاد تصویر از نتایج...');
       
-      // کل صفحه نتایج را بگیریم
-      const resultsContainer = document.querySelector('.w-full.max-w-7xl');
+      // ایجاد یک div موقت برای تصویر
+      const tempDiv = document.createElement('div');
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.left = '-10000px';
+      tempDiv.style.top = '0';
+      tempDiv.style.width = '1000px';
+      tempDiv.style.padding = '40px';
+      tempDiv.style.background = '#ffffff';
+      tempDiv.style.fontFamily = "'Vazirmatn', sans-serif";
+      tempDiv.style.direction = 'rtl';
       
-      if (!resultsContainer) {
-        hideLoading();
-        showCopyNotification('خطا: بخش نتایج یافت نشد.');
-        return;
-      }
+      // اضافه کردن HTML ساختارمند شده
+      tempDiv.innerHTML = createImageHTML();
       
-      // ذخیره استایل اصلی
-      const originalBackground = resultsContainer.style.background;
-      const originalMargin = resultsContainer.style.margin;
-      const originalPadding = resultsContainer.style.padding;
+      // اضافه کردن به body
+      document.body.appendChild(tempDiv);
       
-      // تنظیم استایل‌های موقت برای تصویر بهتر
-      resultsContainer.style.background = '#ffffff';
-      resultsContainer.style.margin = '0 auto';
-      resultsContainer.style.padding = '40px 20px';
-      resultsContainer.style.width = '100%';
-      resultsContainer.style.maxWidth = '1000px';
-      
-      html2canvas(resultsContainer, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        logging: false,
-        windowWidth: resultsContainer.scrollWidth,
-        windowHeight: resultsContainer.scrollHeight,
-        onclone: function(clonedDoc) {
-          // می‌توانیم در اینجا تغییرات لازم را روی نسخه کلون شده اعمال کنیم
-          const clonedContainer = clonedDoc.querySelector('.w-full.max-w-7xl');
-          if (clonedContainer) {
-            clonedContainer.style.background = '#ffffff';
-            clonedContainer.style.margin = '0 auto';
-            clonedContainer.style.padding = '40px 20px';
-            clonedContainer.style.width = '100%';
-            clonedContainer.style.maxWidth = '1000px';
-            
-            // اضافه کردن هدر برای تصویر
-            const header = clonedDoc.createElement('div');
-            header.innerHTML = `
-              <div style="text-align: center; padding: 30px; background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: white; border-radius: 20px; margin-bottom: 30px;">
-                <h1 style="font-size: 28px; margin-bottom: 10px; font-weight: bold;">📅 تقویم محتوای پایه هفتگی 📅</h1>
-                <p style="font-size: 18px; opacity: 0.95;">ساخته شده با Koosha co</p>
-                <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
-              </div>
-            `;
-            clonedContainer.insertBefore(header, clonedContainer.firstChild);
-            
-            // اضافه کردن فوتر برای تصویر
-            const footer = clonedDoc.createElement('div');
-            footer.innerHTML = `
-              <div style="text-align: center; padding: 20px; margin-top: 30px; color: #666; font-size: 14px; border-top: 2px solid #eee;">
-                <p>برای اطلاعات بیشتر به koosha.co مراجعه کنید</p>
-              </div>
-            `;
-            clonedContainer.appendChild(footer);
+      // صبر کردن کمی برای لود شدن فونت‌ها
+      setTimeout(() => {
+        html2canvas(tempDiv, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          width: tempDiv.offsetWidth,
+          height: tempDiv.offsetHeight,
+          onclone: function(clonedDoc) {
+            // اطمینان از اعمال استایل‌ها
+            const clonedDiv = clonedDoc.querySelector('div[style*="left: -10000px"]');
+            if (clonedDiv) {
+              clonedDiv.style.fontFamily = "'Vazirmatn', sans-serif";
+              clonedDiv.style.direction = 'rtl';
+            }
           }
-        }
-      }).then(canvas => {
-        // بازگرداندن استایل اصلی
-        resultsContainer.style.background = originalBackground;
-        resultsContainer.style.margin = originalMargin;
-        resultsContainer.style.padding = originalPadding;
-        resultsContainer.style.width = '';
-        resultsContainer.style.maxWidth = '';
-        
-        // ایجاد لینک دانلود
-        const link = document.createElement('a');
-        const date = new Date().toLocaleDateString('fa-IR').replace(/\//g, '-');
-        link.download = `تقویم-محتوای-اینستاگرام-${date}.png`;
-        link.href = canvas.toDataURL('image/png');
-        
-        // تریگر دانلود
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        hideLoading();
-        showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
-      }).catch(error => {
-        // بازگرداندن استایل اصلی در صورت خطا
-        resultsContainer.style.background = originalBackground;
-        resultsContainer.style.margin = originalMargin;
-        resultsContainer.style.padding = originalPadding;
-        resultsContainer.style.width = '';
-        resultsContainer.style.maxWidth = '';
-        
-        hideLoading();
-        console.error('Error generating image:', error);
-        showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
-      });
+        }).then(canvas => {
+          // ایجاد لینک دانلود
+          const link = document.createElement('a');
+          const date = new Date().toLocaleDateString('fa-IR').replace(/\//g, '-');
+          link.download = `تقویم-محتوای-اینستاگرام-${date}.png`;
+          link.href = canvas.toDataURL('image/png');
+          
+          // حذف div موقت
+          document.body.removeChild(tempDiv);
+          
+          // تریگر دانلود
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          hideLoading();
+          showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
+        }).catch(error => {
+          // حذف div موقت در صورت خطا
+          if (tempDiv.parentNode) {
+            document.body.removeChild(tempDiv);
+          }
+          hideLoading();
+          console.error('Error generating image:', error);
+          showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
+        });
+      }, 1000);
     }
 
     function renderLogin() {
@@ -1017,7 +844,7 @@
                 >
               </div>
               <h2 class="font-bold mb-3" style="color: ${config.text_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;">${config.app_title}</h2>
-              <p style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">محتوای حرفه‌ای برای اینستاگرام بسازید</p>
+              <p style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">وارد شوید تا محتوای حرفه‌ای برای اینستاگرام بسازید.</p>
             </div>
             <form id="loginForm" class="space-y-5">
               <div>
@@ -1117,7 +944,7 @@
                   class="mt-8 px-8 py-4 rounded-xl transition-all hover:shadow-lg"
                   style="border: 3px solid #050120; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; font-weight: 600;"
                 >
-                  ← بازگشت
+                   بازگشت
                 </button>
               ` : ''}
             </div>
@@ -1202,17 +1029,29 @@
       app.innerHTML = `
         <div class="w-full min-h-full" style="background-color: ${config.background_color};">
           <div class="w-full max-w-7xl mx-auto px-4 py-8">
-            <div class="mb-8 p-6 rounded-3xl shadow-lg flex items-center justify-between flex-wrap gap-4" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);">
-              <div>
-                <h1 class="font-medium mb-2" style="color: ${config.secondary_color}; font-size: ${config.font_size * 2.2}px; font-family: ${config.font_family}, sans-serif;">📅 تقویم محتوای پایه هفتگی شما 📅</h1>
-                <p class="font-medium" style="color: ${config.secondary_color}; opacity: 0.95; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;">متناسب با ساختار اینستاگرام</p>
+           <div class="mb-8 p-6 rounded-3xl shadow-lg flex items-center justify-center flex-wrap gap-4"
+     style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);">
+
+              <div style=" display: flex;
+    justify-content: center;
+    align-items: center;">
+                <h1 class="font-medium mb-2" style="text-align: center; color: ${config.secondary_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;"> تقویم محتوای هفتگی شما آمادست. </h1>
               </div>
               <button 
                 onclick="downloadImage()"
                 class="px-6 py-3 rounded-xl font-bold transition-all hover:shadow-lg flex items-center gap-2"
-                style="background: ${config.secondary_color}; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; border: 2px solid #050120;"
+              style="
+    background: ${config.secondary_color};
+    color: #050120;
+    font-size: ${config.font_size * 1.1}px;
+    font-family: ${config.font_family}, sans-serif;
+    border: 2px solid #050120;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
               >
-                <span>📷 دانلود تصویر</span>
+                <span style="text-align: center;">📷 دانلود تصویر</span>
               </button>
             </div>
 
