@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Koosha co</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
+  <!-- اضافه کردن html2canvas برای گرفتن اسکرین‌شات -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     body {
       box-sizing: border-box;
@@ -46,12 +48,187 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.7; }
     }
+
+    /* استایل‌های جدید برای اشتراک‌گذاری */
+    .share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .share-modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .share-option {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .share-option:hover {
+      border-color: #00a0b0;
+      background-color: #f0f9ff;
+      transform: translateY(-2px);
+    }
+
+    .share-option-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-left: 16px;
+    }
+
+    .copy-notification {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #10b981;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      z-index: 1001;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+      backdrop-filter: blur(5px);
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #00a0b0;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="w-full min-h-full">
+</head>
+<body class="w-full min-h-full">
   <div id="app" class="w-full min-h-full"></div>
+  
+  <!-- افزودن دیالوگ اشتراک‌گذاری -->
+  <div id="shareModal" class="share-modal hidden">
+    <div class="share-modal-content fade-in">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="font-bold text-xl" style="color: #1A1A1A;">🔄 اشتراک‌گذاری نتایج</h3>
+        <button onclick="closeShareModal()" class="text-2xl p-2 hover:bg-gray-100 rounded-full transition-colors">×</button>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="share-option" onclick="shareAsLink()">
+          <div class="share-option-icon" style="background-color: #3b82f6; color: white;">
+            🔗
+          </div>
+          <div>
+            <h4 class="font-bold text-lg">اشتراک لینک</h4>
+            <p class="text-gray-600 text-sm mt-1">ایجاد لینک قابل اشتراک از نتایج شما</p>
+          </div>
+        </div>
+        
+        <div class="share-option" onclick="shareAsImage()">
+          <div class="share-option-icon" style="background-color: #10b981; color: white;">
+            📷
+          </div>
+          <div>
+            <h4 class="font-bold text-lg">دانلود تصویر</h4>
+            <p class="text-gray-600 text-sm mt-1">ذخیره نتایج به عنوان تصویر با کیفیت</p>
+          </div>
+        </div>
+        
+        <div class="share-option" onclick="shareAsPDF()">
+          <div class="share-option-icon" style="background-color: #ef4444; color: white;">
+            📄
+          </div>
+          <div>
+            <h4 class="font-bold text-lg">دانلود PDF</h4>
+            <p class="text-gray-600 text-sm mt-1">ذخیره نتایج به صورت PDF قابل چاپ</p>
+          </div>
+        </div>
+        
+        <div class="share-option" onclick="copyToClipboard()">
+          <div class="share-option-icon" style="background-color: #8b5cf6; color: white;">
+            📋
+          </div>
+          <div>
+            <h4 class="font-bold text-lg">کپی متن</h4>
+            <p class="text-gray-600 text-sm mt-1">کپی خلاصه نتایج برای اشتراک در شبکه‌های اجتماعی</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <h4 class="font-bold text-lg mb-3">🔗 لینک مستقیم</h4>
+        <div class="flex gap-2">
+          <input type="text" id="shareLinkInput" readonly 
+            class="flex-1 p-3 border border-gray-300 rounded-xl bg-gray-50 text-sm"
+            value="در حال بارگذاری...">
+          <button onclick="copyShareLink()" 
+            class="px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
+            کپی
+          </button>
+        </div>
+        <p class="text-gray-500 text-xs mt-2">این لینک 30 روز معتبر است</p>
+      </div>
+    </div>
+  </div>
+
   <script>
     const defaultConfig = {
       app_title: "تولید محتوای اینستاگرام",
@@ -133,7 +310,7 @@
         hashtag_strategy: {
           primary: ["صنایع_غذایی", "غذای_خانگی", "آشپزی_ایرانی"],
           secondary: ["دستور_پخت", "نکات_آشپزی", "غذای_سالم"],
-          niche: [] // will be filled based on specific business
+          niche: []
         }
       },
       "ساخت و ساز": {
@@ -406,7 +583,7 @@
       }
     };
 
-    // Add more industries with same detailed structure
+    // اضافه کردن صنایع دیگر
     contentStrategies["پوشاک و مد"] = {
       hooks: [
         "👗 استایلی که همه می‌پرسند از کجاست",
@@ -751,6 +928,7 @@
     let userAnswers = {};
     let generatedContent = [];
     let isLoggedIn = false;
+    let shareId = null;
 
     const questions = [
       {
@@ -805,20 +983,278 @@
       }
     ];
 
+    // تابع‌های جدید برای اشتراک‌گذاری
+    function generateShareId() {
+      return 'share_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    function saveToLocalStorage() {
+      shareId = generateShareId();
+      const shareData = {
+        userAnswers: userAnswers,
+        generatedContent: generatedContent,
+        timestamp: new Date().toISOString(),
+        shareId: shareId
+      };
+      localStorage.setItem(shareId, JSON.stringify(shareData));
+      
+      // همچنین برای دسترسی آسان‌تر
+      localStorage.setItem('lastShareId', shareId);
+      
+      // تنظیم لینک اشتراک‌گذاری
+      const shareUrl = `${window.location.origin}${window.location.pathname}?share=${shareId}`;
+      document.getElementById('shareLinkInput').value = shareUrl;
+      
+      return shareUrl;
+    }
+
+    function loadFromLocalStorage(shareId) {
+      const savedData = localStorage.getItem(shareId);
+      if (savedData) {
+        try {
+          const data = JSON.parse(savedData);
+          userAnswers = data.userAnswers || {};
+          generatedContent = data.generatedContent || [];
+          return true;
+        } catch (e) {
+          console.error('Error loading saved data:', e);
+        }
+      }
+      return false;
+    }
+
+    function showShareModal() {
+      const shareModal = document.getElementById('shareModal');
+      shareModal.classList.remove('hidden');
+      // ایجاد لینک اشتراک‌گذاری
+      const shareUrl = saveToLocalStorage();
+      document.getElementById('shareLinkInput').value = shareUrl;
+    }
+
+    function closeShareModal() {
+      const shareModal = document.getElementById('shareModal');
+      shareModal.classList.add('hidden');
+    }
+
+    function shareAsLink() {
+      const shareUrl = saveToLocalStorage();
+      
+      // اگر Web Share API پشتیبانی می‌شود
+      if (navigator.share) {
+        navigator.share({
+          title: 'نتایج تقویم محتوای اینستاگرام من',
+          text: 'من تقویم محتوای اینستاگرام خود را ایجاد کردم. برای مشاهده این لینک را ببینید:',
+          url: shareUrl,
+        })
+        .then(() => showCopyNotification('نتایج با موفقیت به اشتراک گذاشته شد!'))
+        .catch((error) => {
+          // اگر کاربر اشتراک‌گذاری را لغو کرد، لینک را در کلیپ‌بورد کپی کن
+          copyToClipboard();
+        });
+      } else {
+        // اگر Web Share API پشتیبانی نمی‌شود
+        copyToClipboard();
+      }
+    }
+
+    function shareAsImage() {
+      showLoading('در حال ایجاد تصویر از نتایج...');
+      
+      // انتخاب بخشی که باید تصویر بگیرد
+      const resultsContent = document.querySelector('#results-content');
+      
+      html2canvas(resultsContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        onclone: function(clonedDoc) {
+          // می‌توانیم در اینجا تغییرات لازم را روی نسخه کلون شده اعمال کنیم
+        }
+      }).then(canvas => {
+        hideLoading();
+        
+        // ایجاد لینک دانلود
+        const link = document.createElement('a');
+        link.download = `تقویم-محتوای-اینستاگرام-${new Date().toLocaleDateString('fa-IR')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
+      }).catch(error => {
+        hideLoading();
+        console.error('Error generating image:', error);
+        showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
+      });
+    }
+
+    function shareAsPDF() {
+      showLoading('در حال ایجاد فایل PDF...');
+      
+      const resultsContent = document.querySelector('#results-content');
+      
+      html2canvas(resultsContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 295; // A4 height in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        
+        let heightLeft = imgHeight;
+        let position = 0;
+        
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        
+        pdf.save(`تقویم-محتوای-اینستاگرام-${new Date().toLocaleDateString('fa-IR')}.pdf`);
+        hideLoading();
+        showCopyNotification('فایل PDF با موفقیت دانلود شد!');
+      }).catch(error => {
+        hideLoading();
+        console.error('Error generating PDF:', error);
+        showCopyNotification('خطا در ایجاد PDF. لطفاً دوباره امتحان کنید.');
+      });
+    }
+
+    function copyToClipboard() {
+      const shareUrl = saveToLocalStorage();
+      
+      // ایجاد متن خلاصه برای اشتراک
+      const summary = `📅 **تقویم محتوای اینستاگرام من** 📅
+    
+صنعت: ${userAnswers.industry || 'تعریف نشده'}
+تعداد محتواهای تولید شده: ${generatedContent.length}
+    
+برای مشاهده کامل نتایج این لینک را ببینید:
+${shareUrl}
+    
+ساخته شده با Koosha co 🚀`;
+      
+      navigator.clipboard.writeText(summary)
+        .then(() => showCopyNotification('متن نتایج در کلیپ‌بورد کپی شد!'))
+        .catch(err => {
+          console.error('Error copying text: ', err);
+          showCopyNotification('خطا در کپی متن. لطفاً دوباره امتحان کنید.');
+        });
+    }
+
+    function copyShareLink() {
+      const shareLinkInput = document.getElementById('shareLinkInput');
+      shareLinkInput.select();
+      shareLinkInput.setSelectionRange(0, 99999);
+      
+      navigator.clipboard.writeText(shareLinkInput.value)
+        .then(() => showCopyNotification('لینک در کلیپ‌بورد کپی شد!'))
+        .catch(err => {
+          console.error('Error copying link: ', err);
+          // روش جایگزین برای قدیمی‌ترها
+          document.execCommand('copy');
+          showCopyNotification('لینک کپی شد!');
+        });
+    }
+
+    function showCopyNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'copy-notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translate(-50%, 20px)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    function showLoading(message) {
+      let loadingDiv = document.getElementById('loading-overlay');
+      if (!loadingDiv) {
+        loadingDiv = document.createElement('div');
+        loadingDiv.id = 'loading-overlay';
+        loadingDiv.className = 'loading-overlay';
+        loadingDiv.innerHTML = `
+          <div class="loading-spinner"></div>
+          <p style="color: #1A1A1A; font-size: 18px; margin-top: 20px;">${message}</p>
+        `;
+        document.body.appendChild(loadingDiv);
+      }
+    }
+
+    function hideLoading() {
+      const loadingDiv = document.getElementById('loading-overlay');
+      if (loadingDiv) {
+        loadingDiv.style.opacity = '0';
+        setTimeout(() => {
+          if (loadingDiv.parentNode) {
+            loadingDiv.parentNode.removeChild(loadingDiv);
+          }
+        }, 300);
+      }
+    }
+
+    // بررسی پارامتر share در URL
+    function checkForShareParameter() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const shareParam = urlParams.get('share');
+      
+      if (shareParam) {
+        if (loadFromLocalStorage(shareParam)) {
+          isLoggedIn = true;
+          generateContent();
+          renderResults();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // بارگذاری کتابخانه jsPDF برای ایجاد PDF
+    function loadJSPDF() {
+      return new Promise((resolve, reject) => {
+        if (typeof jsPDF !== 'undefined') {
+          resolve();
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
     function renderLogin() {
+      // ابتدا بررسی کن آیا پارامتر اشتراک در URL وجود دارد
+      if (checkForShareParameter()) {
+        return; // اگر داده‌های اشتراک لود شد، لاگین را نشان نده
+      }
+      
       const app = document.getElementById('app');
       app.innerHTML = `
         <div class="w-full h-screen flex items-center justify-center instagram-gradient">
           <div class="w-full max-w-md mx-4 p-8 rounded-3xl shadow-2xl fade-in" style="background-color: ${config.secondary_color};">
             <div class="text-center mb-8">
-            <div class="inline-block px-8 py-4 rounded-full mb-6">
-  <img 
-    src="./koosha-co-logo.png" 
-    alt="logo" 
-    class="w-20 h-20 rounded-full object-cover"
-  >
-</div>
-
+              <div class="inline-block px-8 py-4 rounded-full mb-6">
+                <img 
+                  src="./koosha-co-logo.png" 
+                  alt="logo" 
+                  class="w-20 h-20 rounded-full object-cover"
+                >
+              </div>
               <h2 class="font-bold mb-3" style="color: ${config.text_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;">${config.app_title}</h2>
               <p style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">محتوای حرفه‌ای برای اینستاگرام بسازید</p>
             </div>
@@ -874,27 +1310,23 @@
           <div class="w-full max-w-5xl mx-auto px-4 py-8">
             <div class="mb-8">
               <div class="flex items-center justify-between mb-6">
-            <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full instagram-gradient">
-  
-  <img 
-    src="./koosha-co-logo.png" 
-    alt="logo" 
-    class="w-16 h-16 rounded-full object-cover"
-  >
-
-  <span 
-    class="font-bold"
-    style="
-      color: ${config.secondary_color};
-      font-size: ${config.font_size * 1.1}px;
-      font-family: ${config.font_family}, sans-serif;
-    "
-  >
-    ${config.logo_text}
-  </span>
-
-</div>
-
+                <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full instagram-gradient">
+                  <img 
+                    src="./koosha-co-logo.png" 
+                    alt="logo" 
+                    class="w-16 h-16 rounded-full object-cover"
+                  >
+                  <span 
+                    class="font-bold"
+                    style="
+                      color: ${config.secondary_color};
+                      font-size: ${config.font_size * 1.1}px;
+                      font-family: ${config.font_family}, sans-serif;
+                    "
+                  >
+                    ${config.logo_text}
+                  </span>
+                </div>
                 <span class="font-semibold" style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">سوال ${currentStep + 1} از ${questions.length}</span>
               </div>
               <div class="w-full h-3 rounded-full overflow-hidden" style="background-color: ${config.secondary_color};">
@@ -1009,88 +1441,103 @@
       app.innerHTML = `
         <div class="w-full min-h-full" style="background-color: ${config.background_color};">
           <div class="w-full max-w-7xl mx-auto px-4 py-8">
-            <div class="mb-8 p-6 rounded-3xl shadow-lg flex items-center justify-between flex-wrap gap-4" style=" background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); 0%, ${config.accent_color} 100%);">
+            <div class="mb-8 p-6 rounded-3xl shadow-lg flex items-center justify-between flex-wrap gap-4" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);">
               <div>
                 <h1 class="font-medium mb-2" style="color: ${config.secondary_color}; font-size: ${config.font_size * 2.2}px; font-family: ${config.font_family}, sans-serif;">📅 تقویم محتوای پایه هفتگی شما 📅</h1>
                 <p class="font-medium" style="color: ${config.secondary_color}; opacity: 0.95; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;">متناسب با ساختار اینستاگرام</p>
               </div>
+              <button 
+                onclick="showShareModal()"
+                class="px-6 py-3 rounded-xl font-bold transition-all hover:shadow-lg flex items-center gap-2"
+                style="background: ${config.secondary_color}; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; border: 2px solid #050120;"
+              >
+                <span>🔄 اشتراک‌گذاری</span>
+              </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              ${generatedContent.map((content, index) => `
-                <div class="p-6 rounded-3xl shadow-xl card-hover fade-in" style="background-color: ${config.secondary_color}; animation-delay: ${index * 0.1}s; border: 2px solid #050120;">
-                  <div class="flex items-center justify-between mb-5">
-                    <span class="px-5 py-2 rounded-full font-bold" style=" background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);, ${config.accent_color}); color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.day}</span>
-                    <span class="px-4 py-1 rounded-full text-xs font-semibold" style="background-color: ${config.background_color}; color: ${config.text_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">${content.contentType}</span>
-                  </div>
-                  
-                  <div class="mb-4 p-4 rounded-xl" style=" background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);15, ${config.accent_color}15);">
-                    <p class="text-xs font-bold mb-1 flex items-center gap-2" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">
- ⏰ بهترین زمان انتشار ⏰
-                    </p>
-                    <p class="font-bold" style="color: ${config.text_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">${content.bestTime}</p>
-                  </div>
+            <div id="results-content">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                ${generatedContent.map((content, index) => `
+                  <div class="p-6 rounded-3xl shadow-xl card-hover fade-in" style="background-color: ${config.secondary_color}; animation-delay: ${index * 0.1}s; border: 2px solid #050120;">
+                    <div class="flex items-center justify-between mb-5">
+                      <span class="px-5 py-2 rounded-full font-bold" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.day}</span>
+                      <span class="px-4 py-1 rounded-full text-xs font-semibold" style="background-color: ${config.background_color}; color: ${config.text_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">${content.contentType}</span>
+                    </div>
+                    
+                    <div class="mb-4 p-4 rounded-xl" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);15, ${config.accent_color}15);">
+                      <p class="text-xs font-bold mb-1 flex items-center gap-2" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">
+                        ⏰ بهترین زمان انتشار ⏰
+                      </p>
+                      <p class="font-bold" style="color: ${config.text_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">${content.bestTime}</p>
+                    </div>
 
-                  <div class="mb-4 p-4 rounded-xl" style="background-color: ${config.background_color};">
-                    <p class="text-sm font-bold mb-2 flex items-center gap-2" style="color: ${config.accent_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">
-                      🔥 هوک (Hook)
-                    </p>
-                    <p class="font-semibold" style="color: ${config.text_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.hook}</p>
-                  </div>
-                  
-                  <div class="mb-4">
-                    <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">📝 ساختار محتوا:</p>
-                    <p class="leading-relaxed" style="color: ${config.text_color}; opacity: 0.85; font-size: ${config.font_size * 0.85}px; line-height: 1.8; font-family: ${config.font_family}, sans-serif; white-space: pre-line;">${content.content}</p>
-                  </div>
+                    <div class="mb-4 p-4 rounded-xl" style="background-color: ${config.background_color};">
+                      <p class="text-sm font-bold mb-2 flex items-center gap-2" style="color: ${config.accent_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">
+                        🔥 هوک (Hook)
+                      </p>
+                      <p class="font-semibold" style="color: ${config.text_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.hook}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">📝 ساختار محتوا:</p>
+                      <p class="leading-relaxed" style="color: ${config.text_color}; opacity: 0.85; font-size: ${config.font_size * 0.85}px; line-height: 1.8; font-family: ${config.font_family}, sans-serif; white-space: pre-line;">${content.content}</p>
+                    </div>
 
-                  <div class="mb-4 p-4 rounded-xl" style="background-color: #050120; opacity: 0.95;">
-                    <p class="text-xs font-bold mb-1" style="color: ${config.secondary_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">💬 Call To Action</p>
-                    <p class="font-bold" style="color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.cta}</p>
-                  </div>
+                    <div class="mb-4 p-4 rounded-xl" style="background-color: #050120; opacity: 0.95;">
+                      <p class="text-xs font-bold mb-1" style="color: ${config.secondary_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">💬 Call To Action</p>
+                      <p class="font-bold" style="color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.cta}</p>
+                    </div>
 
-                  <div class="mb-4 p-3 rounded-xl" style="background-color: ${config.background_color};">
-                    <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; font-size: ${config.font_size * 0.75}px; font-family: ${config.font_family}, sans-serif;">
-                      📱 فرمت: ${content.format} | 🎯 تعامل: ${content.engagementType}
-                    </p>
+                    <div class="mb-4 p-3 rounded-xl" style="background-color: ${config.background_color};">
+                      <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; font-size: ${config.font_size * 0.75}px; font-family: ${config.font_family}, sans-serif;">
+                        📱 فرمت: ${content.format} | 🎯 تعامل: ${content.engagementType}
+                      </p>
+                    </div>
+                    
+                    <p class="text-sm leading-relaxed" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif; line-height: 1.6;">${content.hashtags}</p>
                   </div>
-                  
-                  <p class="text-sm leading-relaxed" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif; line-height: 1.6;">${content.hashtags}</p>
+                `).join('')}
+              </div>
+
+              <div class="mt-12 p-8 rounded-3xl shadow-xl text-center" style="background: linear-gradient(135deg, ${config.secondary_color}, ${config.background_color});">
+                <h3 class="font-bold mb-4" style="color: ${config.text_color}; font-size: ${config.font_size * 1.5}px; font-family: ${config.font_family}, sans-serif;">🎯 نکات طلایی برای موفقیت در اینستاگرام 🎯</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
+                    <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">⏰ زمان‌بندی</p>
+                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">به زمان پیشنهادی پایبند باشید</p>
+                  </div>
+                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
+                    <p class="font-bold mb-2" style="color: ${config.accent_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">💬 تعامل</p>
+                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">۱۵ دقیقه اول به کامنت‌ها پاسخ دهید</p>
+                  </div>
+                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
+                    <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">📊 تحلیل</p>
+                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">تقویم منتخب را با آنالیز-آپدیت Koosha co هفتگی بررسی کنید</p>
+                  </div>
                 </div>
-              `).join('')}
-            </div>
-
-            <div class="mt-12 p-8 rounded-3xl shadow-xl text-center" style="background: linear-gradient(135deg, ${config.secondary_color}, ${config.background_color});">
-              <h3 class="font-bold mb-4" style="color: ${config.text_color}; font-size: ${config.font_size * 1.5}px; font-family: ${config.font_family}, sans-serif;">🎯 نکات طلایی برای موفقیت در اینستاگرام 🎯</h3>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                  <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">⏰ زمان‌بندی</p>
-                  <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">به زمان پیشنهادی پایبند باشید</p>
-                </div>
-                <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                  <p class="font-bold mb-2" style="color: ${config.accent_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">💬 تعامل</p>
-                  <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">۱۵ دقیقه اول به کامنت‌ها پاسخ دهید</p>
-                </div>
-                <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                  <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">📊 تحلیل</p>
-                  <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">تقویم منتخب را با آنالیز-آپدیت Koosha co هفتگی بررسی کنید</p>
+                
+                <div class="flex flex-wrap justify-center gap-4 mt-8">
+                  <button 
+                    onclick="showShareModal()"
+                    class="px-8 py-4 rounded-xl transition-all hover:shadow-xl flex items-center gap-2 font-bold"
+                    style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: ${config.secondary_color}; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;"
+                  >
+                    🔄 اشتراک‌گذاری نتایج
+                  </button>
+                  
+                  <button 
+                    onclick="startOver()"
+                    class="px-8 py-4 rounded-xl transition-all hover:shadow-xl"
+                    style="border: 3px solid #050120; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; font-weight: 700;"
+                  >
+                    🔄 شروع مجدد با پاسخ‌های جدید
+                  </button>
                 </div>
               </div>
-              <button 
-                onclick="startOver()"
-                class="px-10 py-4 rounded-xl transition-all hover:shadow-xl"
-                style="border: 3px solid #050120; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; font-weight: 700;"
-              >
-                🔄 شروع مجدد با پاسخ‌های جدید
-              </button>
             </div>
           </div>
         </div>
       `;
-    }
-
-    function regenerateContent() {
-      generateContent();
-      renderResults();
     }
 
     function startOver() {
@@ -1101,10 +1548,26 @@
       renderLogin();
     }
 
+    // اضافه کردن توابع به window برای دسترسی از HTML
     window.selectOption = selectOption;
     window.previousStep = previousStep;
-    window.regenerateContent = regenerateContent;
     window.startOver = startOver;
+    window.showShareModal = showShareModal;
+    window.closeShareModal = closeShareModal;
+    window.shareAsLink = shareAsLink;
+    window.shareAsImage = shareAsImage;
+    window.shareAsPDF = shareAsPDF;
+    window.copyToClipboard = copyToClipboard;
+    window.copyShareLink = copyShareLink;
+
+    // بارگذاری اولیه jsPDF
+    loadJSPDF().catch(err => {
+      console.warn('Failed to load jsPDF:', err);
+      // در صورت عدم بارگذاری jsPDF، دکمه PDF را غیرفعال می‌کنیم
+      window.shareAsPDF = function() {
+        showCopyNotification('امکان ایجاد PDF در حال حاضر وجود ندارد. لطفاً از گزینه تصویر استفاده کنید.');
+      };
+    });
 
     async function onConfigChange(newConfig) {
       Object.assign(config, newConfig);
@@ -1188,5 +1651,6 @@
 
     renderLogin();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a7a76c74619d24e',t:'MTc2NDY3NDczMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a7a76c74619d24e',t:'MTc2NDY3NDczMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>
