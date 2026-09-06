@@ -1,76 +1,256 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <link rel="icon" href="./koosha-co-logo.png" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koosha co</title>
+  <meta name="theme-color" content="#00a0b0">
+
+  <title>Koosha co | Instagram Content Planner</title>
+
+  <link rel="icon" href="./koosha-co-logo.png" type="image/png">
+
+  <!-- Vazirmatn -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap"
+  >
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <!-- اضافه کردن html2canvas برای گرفتن اسکرین‌شات -->
+
+  <!-- html2canvas -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <!-- اضافه کردن فونت به صورت محلی -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap">
+
+  <!-- Optional SDKs -->
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+
   <style>
-    body {
-      box-sizing: border-box;
-      font-family: 'Vazirmatn', sans-serif;
+    :root {
+      --primary: #00a0b0;
+      --primary-dark: #006b75;
+      --secondary: #ffffff;
+      --text: #111827;
+      --muted: #64748b;
+      --background: #9ad8ed;
+      --dark: #050120;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 24px;
     }
-    
+
     * {
-      font-family: 'Vazirmatn', sans-serif;
+      box-sizing: border-box;
+      font-family: "Vazirmatn", sans-serif;
     }
-    
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .gradient {
+      background:
+        linear-gradient(
+          135deg,
+          #486878 0%,
+          #7591a2 35%,
+          #3e6fb4 70%,
+          #00a0b0 100%
+        );
+    }
+
+    .gradient-text {
+      background:
+        linear-gradient(
+          135deg,
+          #486878,
+          #3e6fb4,
+          #00a0b0
+        );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+    }
+
     .fade-in {
-      animation: fadeIn 0.6s ease-in;
+      animation: fadeIn .45s ease both;
     }
-    
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .card-hover {
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(0, 20, 94, 0.4);
-    }
-
-    .instagram-gradient {
-      background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);
-    }
-
-    .pulse-animation {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    /* استایل‌های جدید برای دانلود تصویر */
-    .copy-notification {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #10b981;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-      z-index: 1001;
-      animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
       from {
         opacity: 0;
-        transform: translate(-50%, 20px);
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: var(--secondary);
+      border-radius: var(--radius);
+      box-shadow: 0 15px 45px rgba(5, 1, 32, .12);
+    }
+
+    .option-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 92px;
+      padding: 18px;
+      border: 2px solid #dbe3ea;
+      background: #fff;
+      border-radius: 18px;
+      color: var(--text);
+      text-align: right;
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+    }
+
+    .option-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 28px rgba(0, 160, 176, .16);
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: #f0fcfd;
+      box-shadow: 0 10px 25px rgba(0, 160, 176, .14);
+    }
+
+    .option-number {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dark);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .option-card.selected .option-number {
+      background: var(--primary);
+    }
+
+    .progress-track {
+      height: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,.55);
+      border-radius: 99px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      transition: width .4s ease;
+    }
+
+    .content-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(5,1,32,.08);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .content-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 22px 50px rgba(5,1,32,.15);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .section-box {
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .copy-btn {
+      border: 1px solid #dbe3ea;
+      background: #fff;
+      color: var(--dark);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      z-index: 9999;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 13px 20px;
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0,0,0,.25);
+      animation: toastIn .25s ease;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 15px);
       }
       to {
         opacity: 1;
@@ -78,1164 +258,2233 @@
       }
     }
 
-    .loading-overlay {
+    .loader-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255, 255, 255, 0.9);
+      inset: 0;
+      z-index: 9998;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      z-index: 1002;
-      backdrop-filter: blur(5px);
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
     }
 
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #00a0b0;
+    .spinner {
+      width: 52px;
+      height: 52px;
+      border: 5px solid #dceff1;
+      border-top-color: var(--primary);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
+      animation: spin .8s linear infinite;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
-    /* استایل‌های ثابت برای html2canvas */
-    .image-container {
-      width: 1000px !important;
-      background: #ffffff !important;
-      padding: 40px !important;
-      font-family: 'Vazirmatn', sans-serif !important;
-      direction: rtl !important;
+    .login-input {
+      width: 100%;
+      padding: 15px 17px;
+      border: 2px solid #dbe3ea;
+      border-radius: 14px;
+      outline: none;
+      transition: .2s ease;
+      background: #fff;
     }
 
-    .image-card {
-      background: #ffffff !important;
-      border: 2px solid #050120 !important;
-      border-radius: 24px !important;
-      padding: 24px !important;
-      margin-bottom: 20px !important;
-      font-family: 'Vazirmatn', sans-serif !important;
+    .login-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(0,160,176,.1);
     }
 
-    .image-header {
-      background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%) !important;
-      color: white !important;
-      padding: 20px !important;
-      border-radius: 16px !important;
-      text-align: center !important;
-      margin-bottom: 30px !important;
-      font-family: 'Vazirmatn', sans-serif !important;
+    .empty-state {
+      padding: 35px;
+      text-align: center;
+      background: rgba(255,255,255,.7);
+      border-radius: 20px;
     }
 
-    .image-title {
-      font-size: 24px !important;
-      font-weight: bold !important;
-      margin-bottom: 10px !important;
-      font-family: 'Vazirmatn', sans-serif !important;
+    .summary-item {
+      padding: 13px;
+      border-radius: 14px;
+      background: #f8fafc;
     }
 
-    .image-subtitle {
-      font-size: 16px !important;
-      opacity: 0.9 !important;
-      font-family: 'Vazirmatn', sans-serif !important;
+    .download-area {
+      position: absolute;
+      left: -99999px;
+      top: 0;
+      width: 1200px;
+      background: #fff;
+      direction: rtl;
+    }
+
+    .download-inner {
+      width: 1200px;
+      padding: 45px;
+      background: #fff;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .download-card {
+      padding: 20px;
+      border: 1px solid #dbe3ea;
+      border-radius: 18px;
+      background: #fff;
+      page-break-inside: avoid;
+    }
+
+    .download-header {
+      margin-bottom: 25px;
+      padding: 28px;
+      border-radius: 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-area,
+      .download-inner {
+        width: 900px;
+      }
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
     }
   </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 </head>
-<body class="w-full min-h-full">
-  <div id="app" class="w-full min-h-full"></div>
 
-  <script>
-    const defaultConfig = {
-      app_title: "کوشا کمپانی",
-      login_password: "koosha",
-      logo_text: "Koosha co",
-      primary_color: "#00a0b0",
-      secondary_color: "#FFFFFF",
-      text_color: "#1A1A1A",
-      accent_color: "#006b75",
-      background_color: "#9ad8ed",
-      font_family: "Vazirmatn",
-      font_size: 16
+<body>
+
+<div id="app"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const DEFAULT_CONFIG = {
+  app_title: "کوشا کمپانی",
+  logo_text: "Koosha co",
+  login_password: "koosha",
+  primary_color: "#00a0b0",
+  secondary_color: "#ffffff",
+  text_color: "#111827",
+  accent_color: "#006b75",
+  background_color: "#9ad8ed",
+  font_family: "Vazirmatn",
+  font_size: 16
+};
+
+let config = { ...DEFAULT_CONFIG };
+
+const STORAGE_KEY = "koosha_content_planner_v2";
+
+/* =========================================================
+   INDUSTRY DATA
+========================================================= */
+
+const INDUSTRIES = {
+
+  "صنایع غذایی": {
+    hooks: [
+      "🔥 این {number} اشتباه طعم غذای شما را خراب می‌کند",
+      "✨ راز {topic} که کمتر کسی می‌گوید",
+      "⏰ فقط {number} دقیقه تا یک نتیجه حرفه‌ای",
+      "💡 چرا مشتری‌ها عاشق این محصول می‌شوند؟",
+      "🎯 {number} نکته برای بهتر شدن {topic}",
+      "❌ این اشتباه رایج را دیگر تکرار نکنید",
+      "🔥 اگر به {topic} علاقه دارید این را ببینید"
+    ],
+    types: [
+      ["دستور پخت سریع","آموزشی","چهارشنبه","19:00 - 21:00"],
+      ["قبل و بعد","نمایشی","یکشنبه","12:00 - 14:00"],
+      ["نکته تخصصی","آموزشی","شنبه","10:00 - 12:00"],
+      ["پشت صحنه","برندسازی","جمعه","16:00 - 18:00"],
+      ["چالش تعاملی","تعامل","دوشنبه","20:00 - 22:00"],
+      ["اینفوگرافیک","آموزشی","سه‌شنبه","11:00 - 13:00"],
+      ["پیشنهاد ویژه","فروش","پنجشنبه","18:00 - 20:00"]
+    ],
+    hashtags: [
+      "صنایع_غذایی",
+      "غذای_خانگی",
+      "آشپزی_ایرانی",
+      "دستور_پخت",
+      "غذای_سالم"
+    ]
+  },
+
+  "ساخت و ساز": {
+    hooks: [
+      "⚠️ قبل از شروع ساخت این نکته را ببینید",
+      "💰 چگونه هزینه {topic} را کاهش دهیم؟",
+      "🏗️ {number} اشتباه پرهزینه در پروژه‌های ساختمانی",
+      "✅ چک‌لیست مهم قبل از شروع پروژه",
+      "📊 کدام گزینه برای پروژه شما بهتر است؟",
+      "🔍 نکته‌ای که خیلی از پیمانکارها نمی‌گویند",
+      "⏱️ این پروژه واقعاً چقدر زمان می‌برد؟"
+    ],
+    types: [
+      ["قبل و بعد پروژه","نمایشی","یکشنبه","09:00 - 11:00"],
+      ["نکته ایمنی","آموزشی","شنبه","08:00 - 10:00"],
+      ["تایم‌لپس پروژه","ویدیویی","چهارشنبه","17:00 - 19:00"],
+      ["مقایسه مصالح","مقایسه‌ای","سه‌شنبه","10:00 - 12:00"],
+      ["چک‌لیست مرحله‌ای","آموزشی","دوشنبه","11:00 - 13:00"],
+      ["رفع مشکل رایج","آموزشی","پنجشنبه","14:00 - 16:00"],
+      ["هزینه واقعی پروژه","فروش","جمعه","16:00 - 18:00"]
+    ],
+    hashtags: [
+      "ساختمان",
+      "معماری",
+      "دکوراسیون_داخلی",
+      "بازسازی",
+      "مهندسی_عمران"
+    ]
+  },
+
+  "آموزش و مشاوره": {
+    hooks: [
+      "📚 {number} نکته که مسیر یادگیری شما را تغییر می‌دهد",
+      "🎯 راهی که کمتر کسی به شما گفته است",
+      "⚡ فقط {number} دقیقه در روز کافی است",
+      "🚫 قبل از {topic} این اشتباه را نکنید",
+      "💎 این نکته ارزش زیادی برای شما دارد",
+      "🔑 کلید موفقیت در {topic}",
+      "📈 چطور از نقطه شروع به نتیجه برسیم؟"
+    ],
+    types: [
+      ["کاروسل آموزشی","آموزشی","دوشنبه","10:00 - 12:00"],
+      ["داستان موفقیت","برندسازی","چهارشنبه","19:00 - 21:00"],
+      ["نکته سریع 60 ثانیه‌ای","ویدیویی","شنبه","12:00 - 14:00"],
+      ["مقایسه روش‌ها","مقایسه‌ای","سه‌شنبه","15:00 - 17:00"],
+      ["چالش 7 روزه","تعامل","یکشنبه","09:00 - 11:00"],
+      ["سوال و جواب","تعامل","پنجشنبه","18:00 - 20:00"],
+      ["منابع رایگان","ارزش‌آفرینی","جمعه","16:00 - 18:00"]
+    ],
+    hashtags: [
+      "آموزش",
+      "یادگیری",
+      "توسعه_فردی",
+      "مهارت_آموزی",
+      "موفقیت"
+    ]
+  },
+
+  "زیبایی و سلامت": {
+    hooks: [
+      "✨ {number} روز تا یک روتین بهتر",
+      "❌ این اشتباه می‌تواند نتیجه روتین شما را خراب کند",
+      "🌟 راز یک روتین ساده و کاربردی",
+      "⚡ نتیجه را از همین امروز شروع کنید",
+      "🔬 یک نکته علمی که باید بدانید",
+      "💚 {number} نکته برای مراقبت بهتر",
+      "⏰ روتین چند دقیقه‌ای برای روزهای شلوغ"
+    ],
+    types: [
+      ["قبل و بعد واقعی","نمایشی","یکشنبه","19:00 - 21:00"],
+      ["روتین مرحله به مرحله","آموزشی","چهارشنبه","20:00 - 22:00"],
+      ["اشتباه رایج","آموزشی","شنبه","11:00 - 13:00"],
+      ["توصیه فصلی","آموزشی","دوشنبه","10:00 - 12:00"],
+      ["مقایسه محصول","مقایسه‌ای","سه‌شنبه","15:00 - 17:00"],
+      ["تغذیه و زیبایی","آموزشی","پنجشنبه","12:00 - 14:00"],
+      ["ریویوی صادقانه","بررسی","جمعه","17:00 - 19:00"]
+    ],
+    hashtags: [
+      "زیبایی",
+      "سلامت_پوست",
+      "مراقبت_پوست",
+      "آرایش",
+      "سلامتی"
+    ]
+  },
+
+  "تکنولوژی و دیجیتال": {
+    hooks: [
+      "🚀 این ترفند می‌تواند زمان شما را نجات دهد",
+      "💡 ترفندی که خیلی‌ها نمی‌دانند",
+      "⚡ فقط چند ثانیه برای انجام این کار",
+      "🔥 قابلیت جدیدی که باید بشناسید",
+      "🎯 بهترین ابزار برای یک کار مشخص",
+      "❌ احتمالاً دارید اشتباه استفاده می‌کنید",
+      "🤖 آیا هوش مصنوعی این کار را تغییر می‌دهد؟"
+    ],
+    types: [
+      ["ترفند سریع","ویدیویی","دوشنبه","10:00 - 12:00"],
+      ["مقایسه ابزار","مقایسه‌ای","چهارشنبه","14:00 - 16:00"],
+      ["آموزش گام به گام","آموزشی","شنبه","11:00 - 13:00"],
+      ["اخبار و ترند","خبری","سه‌شنبه","09:00 - 11:00"],
+      ["رفع مشکل رایج","آموزشی","پنجشنبه","15:00 - 17:00"],
+      ["بهترین اپلیکیشن‌ها","لیستی","یکشنبه","18:00 - 20:00"],
+      ["پیش‌بینی آینده","تحلیلی","جمعه","16:00 - 18:00"]
+    ],
+    hashtags: [
+      "تکنولوژی",
+      "فناوری",
+      "دیجیتال",
+      "اپلیکیشن",
+      "نرم_افزار"
+    ]
+  },
+
+  "پوشاک و مد": {
+    hooks: [
+      "👗 این استایل چرا اینقدر خوب جواب می‌دهد؟",
+      "✨ ترکیب درست چند آیتم ساده",
+      "🔥 ترندی که باید بشناسید",
+      "💎 چطور با بودجه کمتر شیک‌تر باشیم؟",
+      "📏 راهنمای انتخاب سایز مناسب",
+      "🎨 {number} ترکیب رنگ کاربردی",
+      "⚡ یک لباس، چند استایل متفاوت"
+    ],
+    types: [
+      ["استایل روزانه","الهام‌بخش","یکشنبه","10:00 - 12:00"],
+      ["راهنمای ترکیب","آموزشی","چهارشنبه","19:00 - 21:00"],
+      ["ترند فصل","ترندی","شنبه","15:00 - 17:00"],
+      ["قبل و بعد استایل","نمایشی","سه‌شنبه","12:00 - 14:00"],
+      ["راهنمای سایز و فیت","آموزشی","دوشنبه","11:00 - 13:00"],
+      ["کپسول گاردروب","آموزشی","پنجشنبه","18:00 - 20:00"],
+      ["تخفیف و کالکشن جدید","فروش","جمعه","17:00 - 19:00"]
+    ],
+    hashtags: [
+      "مد",
+      "پوشاک",
+      "استایل",
+      "فشن",
+      "لباس"
+    ]
+  },
+
+  "هنر و سرگرمی": {
+    hooks: [
+      "🎨 اگر به {topic} علاقه دارید این را ببینید",
+      "🔥 {number} ایده خلاقانه برای شما",
+      "✨ نتیجه نهایی شاید شما را غافلگیر کند",
+      "🎭 پشت صحنه این اثر را ببینید",
+      "💡 این تکنیک ساده را امتحان کنید",
+      "🎯 چالش امروز شما چیست؟",
+      "🚀 از ایده تا اجرا در چند مرحله"
+    ],
+    types: [
+      ["پشت صحنه","برندسازی","شنبه","18:00 - 20:00"],
+      ["آموزش تکنیک","آموزشی","دوشنبه","16:00 - 18:00"],
+      ["قبل و بعد","نمایشی","سه‌شنبه","19:00 - 21:00"],
+      ["چالش خلاقانه","تعامل","چهارشنبه","20:00 - 22:00"],
+      ["معرفی اثر","برندسازی","پنجشنبه","18:00 - 20:00"],
+      ["ایده الهام‌بخش","الهام‌بخش","جمعه","17:00 - 19:00"],
+      ["نظرسنجی","تعامل","یکشنبه","20:00 - 22:00"]
+    ],
+    hashtags: [
+      "هنر",
+      "خلاقیت",
+      "سرگرمی",
+      "ایده_خلاق",
+      "هنرمند"
+    ]
+  },
+
+  "خدمات مالی": {
+    hooks: [
+      "💰 قبل از تصمیم مالی این نکته را بدانید",
+      "⚠️ {number} اشتباه مالی رایج",
+      "📊 این تفاوت را خیلی‌ها نمی‌دانند",
+      "💡 چطور تصمیم مالی بهتری بگیریم؟",
+      "🎯 یک نکته کاربردی برای مدیریت بهتر",
+      "❌ این باور مالی را کنار بگذارید",
+      "📈 از اینجا مدیریت مالی را شروع کنید"
+    ],
+    types: [
+      ["نکته مالی","آموزشی","شنبه","10:00 - 12:00"],
+      ["اشتباه رایج","آموزشی","دوشنبه","18:00 - 20:00"],
+      ["مقایسه گزینه‌ها","مقایسه‌ای","سه‌شنبه","19:00 - 21:00"],
+      ["پرسش و پاسخ","تعامل","چهارشنبه","18:00 - 20:00"],
+      ["راهنمای مرحله‌ای","آموزشی","پنجشنبه","11:00 - 13:00"],
+      ["مطالعه موردی","تحلیلی","جمعه","16:00 - 18:00"],
+      ["چک‌لیست مالی","ارزش‌آفرینی","یکشنبه","10:00 - 12:00"]
+    ],
+    hashtags: [
+      "مالی",
+      "سرمایه_گذاری",
+      "مدیریت_مالی",
+      "اقتصاد",
+      "کسب_و_کار"
+    ]
+  },
+
+  "گردشگری و مسافرت": {
+    hooks: [
+      "✈️ قبل از سفر این نکته را بدانید",
+      "🌍 {number} مکان که باید ببینید",
+      "💰 چطور با هزینه کمتر بهتر سفر کنیم؟",
+      "📸 لوکیشن‌هایی که ارزش دیدن دارند",
+      "🧳 چک‌لیست ضروری سفر",
+      "🔥 این مقصد را از دست ندهید",
+      "🗺️ برنامه پیشنهادی برای یک سفر بهتر"
+    ],
+    types: [
+      ["معرفی مقصد","الهام‌بخش","شنبه","18:00 - 20:00"],
+      ["چک‌لیست سفر","آموزشی","دوشنبه","10:00 - 12:00"],
+      ["مقایسه مقصدها","مقایسه‌ای","سه‌شنبه","19:00 - 21:00"],
+      ["پشت صحنه سفر","ویدیویی","چهارشنبه","17:00 - 19:00"],
+      ["هزینه سفر","آموزشی","پنجشنبه","12:00 - 14:00"],
+      ["تجربه شخصی","داستانی","جمعه","18:00 - 20:00"],
+      ["نظرسنجی مقصد","تعامل","یکشنبه","20:00 - 22:00"]
+    ],
+    hashtags: [
+      "سفر",
+      "گردشگری",
+      "ایرانگردی",
+      "طبیعت",
+      "مسافرت"
+    ]
+  },
+
+  "املاک و مستغلات": {
+    hooks: [
+      "🏠 قبل از خرید این نکته را بدانید",
+      "💰 {number} نکته برای خرید هوشمندانه‌تر",
+      "⚠️ این اشتباه می‌تواند هزینه زیادی داشته باشد",
+      "📊 این دو گزینه را با هم مقایسه کنیم",
+      "🔑 چطور ملک مناسب را پیدا کنیم؟",
+      "🏗️ نکته مهم در بررسی یک ملک",
+      "📈 چه عواملی روی ارزش ملک اثر دارند؟"
+    ],
+    types: [
+      ["معرفی ملک","فروش","شنبه","18:00 - 20:00"],
+      ["نکته خرید","آموزشی","دوشنبه","11:00 - 13:00"],
+      ["مقایسه ملک‌ها","مقایسه‌ای","سه‌شنبه","19:00 - 21:00"],
+      ["قبل و بعد بازسازی","نمایشی","چهارشنبه","17:00 - 19:00"],
+      ["اشتباه رایج","آموزشی","پنجشنبه","12:00 - 14:00"],
+      ["تحلیل بازار","تحلیلی","جمعه","16:00 - 18:00"],
+      ["پرسش و پاسخ","تعامل","یکشنبه","18:00 - 20:00"]
+    ],
+    hashtags: [
+      "املاک",
+      "خرید_ملک",
+      "فروش_ملک",
+      "سرمایه_گذاری",
+      "مسکن"
+    ]
+  }
+};
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+const QUESTIONS = [
+  {
+    id: "industry",
+    title: "صنعت و حوزه کاری شما چیست؟",
+    description: "حوزه‌ای را انتخاب کنید که بیشترین شباهت را به کسب‌وکار شما دارد.",
+    options: Object.keys(INDUSTRIES)
+  },
+  {
+    id: "business_type",
+    title: "نوع کسب‌وکار شما چیست؟",
+    options: [
+      "محصول فیزیکی",
+      "خدمات حضوری",
+      "خدمات آنلاین",
+      "محتوای دیجیتال",
+      "کافه / رستوران"
+    ]
+  },
+  {
+    id: "audience",
+    title: "مخاطب اصلی شما چه کسانی هستند؟",
+    options: [
+      "نوجوانان 13 تا 18 سال",
+      "جوانان 18 تا 25 سال",
+      "بزرگسالان 25 تا 40 سال",
+      "میانسالان 40 تا 60 سال",
+      "کسب‌وکارها / B2B"
+    ]
+  },
+  {
+    id: "audience_gender",
+    title: "جنسیت غالب مخاطبان شما چیست؟",
+    options: [
+      "زنان",
+      "مردان",
+      "هر دو به یک اندازه"
+    ]
+  },
+  {
+    id: "content_goal",
+    title: "هدف اصلی شما از اینستاگرام چیست؟",
+    options: [
+      "افزایش فروش مستقیم",
+      "ساخت برند و آگاهی",
+      "آموزش و اعتمادسازی",
+      "تعامل و جامعه‌سازی",
+      "افزایش ترافیک سایت"
+    ]
+  },
+  {
+    id: "brand_voice",
+    title: "شخصیت برند شما چگونه است؟",
+    options: [
+      "حرفه‌ای و رسمی",
+      "دوستانه و صمیمی",
+      "شاد و سرگرم‌کننده",
+      "الهام‌بخش و انگیزشی",
+      "لوکس و منحصربه‌فرد"
+    ]
+  },
+  {
+    id: "pain_point",
+    title: "مهم‌ترین مشکل مخاطب شما چیست؟",
+    options: [
+      "کمبود وقت",
+      "کمبود بودجه",
+      "نداشتن اطلاعات کافی",
+      "ترس از اشتباه",
+      "نیاز به راهنمایی"
+    ]
+  },
+  {
+    id: "unique_value",
+    title: "مهم‌ترین مزیت رقابتی شما چیست؟",
+    options: [
+      "کیفیت بی‌نظیر",
+      "قیمت رقابتی",
+      "سرعت و راحتی",
+      "تخصص و تجربه",
+      "نوآوری و خلاقیت"
+    ]
+  },
+  {
+    id: "engagement_preference",
+    title: "چه نوع تعاملی برای شما مهم‌تر است؟",
+    options: [
+      "کامنت و بحث",
+      "ذخیره و اشتراک‌گذاری",
+      "کلیک و خرید",
+      "پیام مستقیم",
+      "تگ دوستان"
+    ]
+  },
+  {
+    id: "content_format",
+    title: "فرمت محتوای مورد علاقه شما چیست؟",
+    options: [
+      "تصویر تک",
+      "کاروسل",
+      "ویدیوی کوتاه / Reel",
+      "قبل و بعد",
+      "اینفوگرافیک"
+    ]
+  }
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let state = {
+  currentStep: 0,
+  answers: {},
+  generated: [],
+  loggedIn: false
+};
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function showToast(message) {
+  const old = document.querySelector(".toast");
+  if (old) old.remove();
+
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 250);
+  }, 2500);
+}
+
+function showLoader(message = "در حال آماده‌سازی...") {
+  hideLoader();
+
+  const overlay = document.createElement("div");
+  overlay.id = "loader";
+  overlay.className = "loader-overlay";
+
+  overlay.innerHTML = `
+    <div class="spinner"></div>
+    <p style="margin-top:20px;font-weight:700;color:#111827;">
+      ${escapeHTML(message)}
+    </p>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+function hideLoader() {
+  document.getElementById("loader")?.remove();
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        answers: state.answers,
+        generated: state.generated
+      })
+    );
+  } catch (error) {
+    console.warn("Storage unavailable:", error);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) return;
+
+    const data = JSON.parse(raw);
+
+    if (data?.answers) {
+      state.answers = data.answers;
+    }
+
+    if (Array.isArray(data?.generated)) {
+      state.generated = data.generated;
+    }
+  } catch (error) {
+    console.warn("Could not load saved state:", error);
+  }
+}
+
+/* =========================================================
+   CONTENT GENERATOR
+========================================================= */
+
+function generateContent() {
+
+  const industry = state.answers.industry;
+  const strategy = INDUSTRIES[industry];
+
+  if (!strategy) {
+    return [];
+  }
+
+  const days = [
+    "شنبه",
+    "یکشنبه",
+    "دوشنبه",
+    "سه‌شنبه",
+    "چهارشنبه",
+    "پنجشنبه",
+    "جمعه"
+  ];
+
+  const topic = state.answers.business_type || "کسب‌وکار شما";
+  const audience = state.answers.audience || "مخاطبان شما";
+  const goal = state.answers.content_goal || "رشد برند";
+  const voice = state.answers.brand_voice || "دوستانه و صمیمی";
+  const pain = state.answers.pain_point || "نیاز اصلی مخاطب";
+  const value = state.answers.unique_value || "مزیت رقابتی شما";
+  const format = state.answers.content_format || "ویدیوی کوتاه / Reel";
+  const engagement = state.answers.engagement_preference || "کامنت و بحث";
+
+  return strategy.types.map((type, index) => {
+
+    const template = type[0];
+    const category = type[1];
+    const day = type[2];
+    const bestTime = type[3];
+
+    let hook = strategy.hooks[index % strategy.hooks.length];
+
+    hook = hook
+      .replaceAll("{number}", String(randomInt(3, 7)))
+      .replaceAll("{topic}", topic)
+      .replaceAll("{audience}", audience);
+
+    const contentPlan = createContentPlan({
+      template,
+      category,
+      industry,
+      audience,
+      goal,
+      voice,
+      pain,
+      value,
+      format
+    });
+
+    const cta = createCTA(goal, engagement, category);
+
+    const hashtags = [
+      ...strategy.hashtags,
+      normalizeTag(industry),
+      normalizeTag(state.answers.business_type),
+      normalizeTag(state.answers.content_goal)
+    ]
+      .filter(Boolean)
+      .filter((item, index, arr) => arr.indexOf(item) === index)
+      .slice(0, 9)
+      .map(item => `#${item}`)
+      .join(" ");
+
+    const score = calculateScore({
+      goal,
+      category,
+      format,
+      engagement
+    });
+
+    return {
+      day,
+      template,
+      category,
+      bestTime,
+      hook,
+      content: contentPlan,
+      cta,
+      hashtags,
+      format,
+      engagement,
+      score
     };
+  });
+}
 
-    let config = { ...defaultConfig };
+function normalizeTag(value) {
+  if (!value) return "";
 
-    const contentStrategies = {
-      "صنایع غذایی": {
-        hooks: [
-          "🔥 {number} نفر این را امتحان کردند و نتیجه باورنکردنی بود",
-          "❌ اشتباه شماره یک در {topic}",
-          "✨ راز {topic} که کسی نمی‌گوید",
-          "⏰ فقط {number} دقیقه تا {result}",
-          "💡 چرا {target_audience} عاشق این هستند؟",
-          "🎯 {number} روش برای {goal}",
-          "⚡ این ترفند زندگی‌تان را تغییر می‌دهد"
-        ],
-        content_types: [
-          {
-            name: "دستور_پخت_سریع",
-            structure: "هوک قدرتمند + مواد لازم + مراحل به صورت نامبردار + نکته طلایی + CTA",
-            best_day: "چهارشنبه",
-            best_time: "19:00-21:00",
-            cta: ["دستور کامل در بایو", "ذخیره کن تا گم نشه", "برای دوستات بفرست"]
-          },
-          {
-            name: "قبل_و_بعد",
-            structure: "تصویر درماتیک + نتیجه قابل لمس + فرآیند کوتاه + CTA اکشن‌محور",
-            best_day: "یکشنبه",
-            best_time: "12:00-14:00",
-            cta: ["می‌خوای یاد بگیری؟", "لینک در بایو", "کامنت بذار برات بفرستم"]
-          },
-          {
-            name: "نکته_تخصصی",
-            structure: "اشتباه رایج + راه حل حرفه‌ای + چرایی علمی + پروف اجتماعی",
-            best_day: "شنبه",
-            best_time: "10:00-12:00",
-            cta: ["سیو کن برای بعد", "تگ کن کسی که نیاز داره", "نظرت چیه؟"]
-          },
-          {
-            name: "پشت_صحنه",
-            structure: "لحظه واقعی + داستان پشت محصول + ارزش انسانی + احساس",
-            best_day: "جمعه",
-            best_time: "16:00-18:00",
-            cta: ["دوست داری بیشتر ببینی؟", "کامنت کن 🔥", "فالو کن برای بیشتر"]
-          },
-          {
-            name: "چالش_تعاملی",
-            structure: "سوال هیجان‌انگیز + گزینه‌های جذاب + نظرسنجی + جایزه انگیزشی",
-            best_day: "دوشنبه",
-            best_time: "20:00-22:00",
-            cta: ["نظرت کدومه؟ کامنت کن", "رای بده و تگ کن", "برنده رو اعلام می‌کنیم"]
-          },
-          {
-            name: "اینفوگرافیک_آموزشی",
-            structure: "عنوان کلیدی + 3-5 نکته مختصر + طراحی خوانا + سورس قابل اعتماد",
-            best_day: "سه‌شنبه",
-            best_time: "11:00-13:00",
-            cta: ["ذخیره کن برای مراجعه", "اشتراک بذار", "دوستات نیاز دارن"]
-          },
-          {
-            name: "پیشنهاد_ویژه",
-            structure: "فوریت (معدودیت زمانی) + ارزش (تخفیف/هدیه) + اعتمادساز + CTA قوی",
-            best_day: "پنجشنبه",
-            best_time: "18:00-20:00",
-            cta: ["لینک در بایو", "الان سفارش بده", "موجودی محدوده"]
-          }
-        ],
-        hashtag_strategy: {
-          primary: ["صنایع_غذایی", "غذای_خانگی", "آشپزی_ایرانی"],
-          secondary: ["دستور_پخت", "نکات_آشپزی", "غذای_سالم"],
-          niche: []
-        }
-      },
-      "ساخت و ساز": {
-        hooks: [
-          "⚠️ قبل از شروع ساخت این را ببینید",
-          "💰 چگونه {percentage}% در {topic} صرفه‌جویی کنید",
-          "🏗️ اشتباهات پرهزینه در {topic}",
-          "✅ چک‌لیست {number} مرحله‌ای قبل از {action}",
-          "📊 مقایسه: {option1} یا {option2}؟",
-          "🔍 نکاتی که مهندس‌ها نمی‌گویند",
-          "⏱️ چقدر طول می‌کشد تا {result}؟"
-        ],
-        content_types: [
-          {
-            name: "قبل_و_بعد_پروژه",
-            structure: "تصویر تحول چشمگیر + زمان انجام + هزینه تقریبی + چالش‌ها + نکات اجرایی",
-            best_day: "یکشنبه",
-            best_time: "09:00-11:00",
-            cta: ["پروژه داری؟ مشاوره رایگان", "سوالی داری بپرس", "تخمین قیمت رایگان"]
-          },
-          {
-            name: "نکته_تخصصی_ایمنی",
-            structure: "خطر رایج + عواقب + راه حل استاندارد + تصویر مستند",
-            best_day: "شنبه",
-            best_time: "08:00-10:00",
-            cta: ["برای ایمنی سیو کن", "تیمت را تگ کن", "نظر تخصصی می‌خوای؟"]
-          },
-          {
-            name: "تایم_لپس_پروژه",
-            structure: "ویدیو تایم‌لپس جذاب + توضیح فرآیند + نکات اجرایی + زمان واقعی",
-            best_day: "چهارشنبه",
-            best_time: "17:00-19:00",
-            cta: ["پروسه کامل در یوتیوب", "دوست داری ببینی؟ فالو کن", "سوال داری بپرس"]
-          },
-          {
-            name: "مقایسه_مصالح",
-            structure: "دو گزینه + مزایا و معایب + قیمت + توصیه بر اساس نیاز + جدول مقایسه",
-            best_day: "سه‌شنبه",
-            best_time: "10:00-12:00",
-            cta: ["کدوم را انتخاب می‌کنی؟", "نیاز به مشاوره؟ DM کن", "ذخیره کن"]
-          },
-          {
-            name: "چک_لیست_مرحله‌ای",
-            structure: "عنوان پروژه + مراحل شماره‌گذاری شده + نکات کلیدی هر مرحله + زمان هر مرحله",
-            best_day: "دوشنبه",
-            best_time: "11:00-13:00",
-            cta: ["PDF رایگان در بایو", "چاپ کن و استفاده کن", "برای تیمت بفرست"]
-          },
-          {
-            name: "رفع_اشکال_رایج",
-            structure: "مشکل رایج + علت + راه حل قدم‌به‌قدم + پیشگیری",
-            best_day: "پنجشنبه",
-            best_time: "14:00-16:00",
-            cta: ["مشکل داری؟ توضیح بده", "تیمت نیاز داره", "سیو کن"]
-          },
-          {
-            name: "هزینه_واقعی_پروژه",
-            structure: "نوع پروژه + جدول هزینه شفاف + فاکتورهای تاثیرگذار + نکات صرفه‌جویی",
-            best_day: "جمعه",
-            best_time: "16:00-18:00",
-            cta: ["برآورد پروژه‌ات رایگانه", "لینک مشاوره در بایو", "تخمین می‌خوای؟"]
-          }
-        ],
-        hashtag_strategy: {
-          primary: ["ساختمان", "معماری", "دکوراسیون_داخلی"],
-          secondary: ["بازسازی", "مهندسی_عمران", "طراحی_داخلی"],
-          niche: []
-        }
-      },
-      "آموزش و مشاوره": {
-        hooks: [
-          "📚 {number} نفر با این روش موفق شدند",
-          "🎯 راهی که کسی بهت نگفت",
-          "⚡ فقط {number} دقیقه روزی کافیه",
-          "🚫 توقف! قبل از {action} این را بخوان",
-          "💎 ارزش {value} دلار، الان رایگان",
-          "🔑 کلید موفقیت در {topic}",
-          "📈 چطور من از {start} به {end} رسیدم"
-        ],
-        content_types: [
-          {
-            name: "کاروسل_آموزشی",
-            structure: "اسلاید 1: هوک تاثیرگذار + اسلایدهای 2-8: محتوای ارزشمند نامبردار + اسلاید آخر: CTA قوی",
-            best_day: "دوشنبه",
-            best_time: "10:00-12:00",
-            cta: ["سیو کن برای مطالعه", "دانلود PDF کامل", "دوره رایگان در بایو"]
-          },
-          {
-            name: "داستان_موفقیت",
-            structure: "قبل (چالش) + روند (راه‌حل) + بعد (نتیجه) + درس آموخته + امکان تکرار",
-            best_day: "چهارشنبه",
-            best_time: "19:00-21:00",
-            cta: ["تو هم می‌تونی", "داستان تو چیه؟", "شروع کن از امروز"]
-          },
-          {
-            name: "نکته_سریع_60_ثانیه",
-            structure: "مشکل رایج + راه‌حل یک‌جمله‌ای + توضیح کوتاه + نتیجه قابل پیش‌بینی",
-            best_day: "شنبه",
-            best_time: "12:00-14:00",
-            cta: ["بیشتر می‌خوای؟ فالو کن", "امتحان کن و نتیجه بگو", "سیو کن"]
-          },
-          {
-            name: "مقایسه_روش‌ها",
-            structure: "روش غلط رایج + چرا کار نمی‌کند + روش صحیح + مثال عملی + قدم اول",
-            best_day: "سه‌شنبه",
-            best_time: "15:00-17:00",
-            cta: ["کدوم را امتحان کردی؟", "نظرت چیه؟", "گام‌های بعدی در بایو"]
-          },
-          {
-            name: "چالش_7_روزه",
-            structure: "هدف چالش + قوانین ساده + نتیجه قابل انتظار + چگونگی شرکت + پاداش",
-            best_day: "یکشنبه",
-            best_time: "09:00-11:00",
-            cta: ["شروع می‌کنی؟ کامنت '✅'", "تگ کن همراهت", "هر روز گزارش بده"]
-          },
-          {
-            name: "سوال_و_جواب_زنده",
-            structure: "سوالات پرتکرار + پاسخ تخصصی + مثال واقعی + منابع بیشتر",
-            best_day: "پنجشنبه",
-            best_time: "18:00-20:00",
-            cta: ["سوالت را کامنت کن", "لایو بعدی کی؟", "جواب می‌خوای؟ DM کن"]
-          },
-          {
-            name: "منابع_رایگان",
-            structure: "لیست منابع ارزشمند + توضیح هر مورد + چرا مفیده + لینک دسترسی",
-            best_day: "جمعه",
-            best_time: "16:00-18:00",
-            cta: ["دانلود رایگان از بایو", "سیو کن گم نشه", "برای دوستات بفرست"]
-          }
-        ],
-        hashtag_strategy: {
-          primary: ["آموزش", "یادگیری", "توسعه_فردی"],
-          secondary: ["مهارت_آموزی", "موفقیت", "کوچینگ"],
-          niche: []
-        }
-      },
-      "زیبایی و سلامت": {
-        hooks: [
-          "✨ {number} روز + این روتین = تحول کامل",
-          "❌ این ماده پوستت را نابود می‌کند",
-          "🌟 راز {celebrity/expert} برای {benefit}",
-          "⚡ نتیجه از {timeframe} اول",
-          "🔬 علم می‌گوید {fact}",
-          "💚 {number} ماده طبیعی برای {benefit}",
-          "⏰ روتین {time} دقیقه‌ای من"
-        ],
-        content_types: [
-          {
-            name: "قبل_و_بعد_واقعی",
-            structure: "تصویر شفاف + بازه زمانی مشخص + محصولات استفاده شده + روتین دقیق + نکات مهم",
-            best_day: "یکشنبه",
-            best_time: "19:00-21:00",
-            cta: ["محصولات در بایو", "سوال داری بپرس", "تجربه‌ات را بگو"]
-          },
-          {
-            name: "روتین_مرحله_به_مرحله",
-            structure: "هدف روتین + مرحله 1 تا 5 با تصویر + زمان هر مرحله + نکات تکمیلی",
-            best_day: "چهارشنبه",
-            best_time: "20:00-22:00",
-            cta: ["سیو کن و امتحان کن", "نتیجه را برام بفرست", "نسخه PDF در بایو"]
-          },
-          {
-            name: "اشتباه_رایج",
-            structure: "اشتباه + چرا اشتباهه + عوارض + راه حل صحیح + توصیه محصول",
-            best_day: "شنبه",
-            best_time: "11:00-13:00",
-            cta: ["تو این اشتباه را می‌کنی؟", "کامنت کن", "برای جلوگیری سیو کن"]
-          },
-          {
-            name: "توصیه_فصلی",
-            structure: "چالش فصل + راه‌حل تخصصی + محصولات ضروری + نکات پیشگیری",
-            best_day: "دوشنبه",
-            best_time: "10:00-12:00",
-            cta: ["آماده‌ی فصل جدید؟", "گاید کامل در بایو", "چه محصولی داری؟"]
-          },
-          {
-            name: "مقایسه_محصول",
-            structure: "2 محصول محبوب + مقایسه صادقانه + برای چه پوستی + قیمت + توصیه نهایی",
-            best_day: "سه‌شنبه",
-            best_time: "15:00-17:00",
-            cta: ["کدوم را ترجیح می‌دی؟", "تجربه داری بگو", "لینک خرید در بایو"]
-          },
-          {
-            name: "نکات_تغذیه_برای_زیبایی",
-            structure: "ارتباط غذا و پوست/مو + مواد غذایی موثر + روش مصرف + زمان نتیجه",
-            best_day: "پنجشنبه",
-            best_time: "12:00-14:00",
-            cta: ["رژیم غذایی می‌خوای؟", "سیو کن", "دیتولوژیست داریم در بایو"]
-          },
-          {
-            name: "ریویو_صادقانه",
-            structure: "انتظار + واقعیت + مزایا + معایب + نتیجه نهایی + قیمت + ارزشش را داره؟",
-            best_day: "جمعه",
-            best_time: "17:00-19:00",
-            cta: ["سوال دیگه‌ای داری؟", "می‌خوای تست کنی؟", "تجربه‌ات را بگو"]
-          }
-        ],
-        hashtag_strategy: {
-          primary: ["زیبایی", "سلامت_پوست", "مراقبت_پوست"],
-          secondary: ["آرایش", "بهداشت", "سلامتی"],
-          niche: []
-        }
-      },
-      "تکنولوژی و دیجیتال": {
-        hooks: [
-          "🚀 این ابزار {timeframe} وقتت را می‌برد",
-          "💡 ترفندی که {percentage}% نمی‌دانند",
-          "⚡ {number} ثانیه برای {result}",
-          "🔥 آپدیت جدید که همه را شوکه کرد",
-          "🎯 بهترین {tool} برای {purpose}",
-          "❌ داری اشتباه استفاده می‌کنی",
-          "🤖 AI جایگزین {job} می‌شود؟"
-        ],
-        content_types: [
-          {
-            name: "ترفند_سریع",
-            structure: "مشکل رایج + ترفند ناشناخته + دموی تصویری + زمان صرفه‌جویی",
-            best_day: "دوشنبه",
-            best_time: "10:00-12:00",
-            cta: ["سیو کن برای استفاده", "می‌دونستی؟", "ترفند دیگه می‌خوای؟"]
-          },
-          {
-            name: "مقایسه_ابزار",
-            structure: "ابزار A vs B + جدول مقایسه + موارد استفاده + قیمت + توصیه",
-            best_day: "چهارشنبه",
-            best_time: "14:00-16:00",
-            cta: ["کدوم را استفاده می‌کنی؟", "لینک ابزارها در بایو", "سوال داری؟"]
-          },
-          {
-            name: "آموزش_گام_به_گام",
-            structure: "هدف + پیش‌نیازها + مراحل عکس‌دار + نکات رفع اشکال + منابع",
-            best_day: "شنبه",
-            best_time: "11:00-13:00",
-            cta: ["ویدیو کامل در یوتیوب", "سیو کن", "امتحان کردی؟"]
-          },
-          {
-            name: "اخبار_و_ترند",
-            structure: "خبر + تاثیر بر کاربران + نظر تخصصی + پیش‌بینی آینده",
-            best_day: "سه‌شنبه",
-            best_time: "09:00-11:00",
-            cta: ["نظرت چیه؟", "دنبال می‌کنی؟", "تاثیر روی تو؟"]
-          },
-          {
-            name: "رفع_مشکل_رایج",
-            structure: "ارور/مشکل + علت احتمالی + راه‌حل‌های ممکن + پیشگیری",
-            best_day: "پنجشنبه",
-            best_time: "15:00-17:00",
-            cta: ["کار کرد؟ بگو", "مشکل دیگه داری؟", "سیو کن"]
-          },
-          {
-            name: "بهترین_اپلیکیشن",
-            structure: "دسته‌بندی + 3-5 اپ برتر + ویژگی‌ها + قیمت + لینک",
-            best_day: "یکشنبه",
-            best_time: "18:00-20:00",
-            cta: ["نصب کردی؟", "پیشنهاد دیگه داری؟", "لینک‌ها در بایو"]
-          },
-          {
-            name: "پیش‌بینی_آینده",
-            structure: "ترند فعلی + تحلیل + پیش‌بینی + آماده‌سازی",
-            best_day: "جمعه",
-            best_time: "16:00-18:00",
-            cta: ["موافقی؟", "آینده چطوریه؟", "نظرت مهمه"]
-          }
-        ],
-        hashtag_strategy: {
-          primary: ["تکنولوژی", "فناوری", "دیجیتال"],
-          secondary: ["اپلیکیشن", "نرم_افزار", "ابزار"],
-          niche: []
-        }
-      }
-    };
+  return String(value)
+    .replace(/\//g, "")
+    .replace(/\s+/g, "_")
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9_]/g, "");
+}
 
-    // اضافه کردن صنایع دیگر
-    contentStrategies["پوشاک و مد"] = {
-      hooks: [
-        "👗 استایلی که همه می‌پرسند از کجاست",
-        "✨ ترکیب {item1} با {item2} = کامل",
-        "🔥 ترند {season} که باید داشته باشی",
-        "💎 لوکس به نظر برس با بودجه کم",
-        "📏 راهنمای سایز برای {body_type}",
-        "🎨 {number} رنگ که به هم می‌خورند",
-        "⚡ از صبح تا شب با یک لباس"
-      ],
-      content_types: [
-        {
-          name: "استایل_روزانه",
-          structure: "لوک کامل + جزئیات هر قطعه + برند + قیمت تقریبی + موقعیت مناسب",
-          best_day: "یکشنبه",
-          best_time: "10:00-12:00",
-          cta: ["لینک محصولات در بایو", "دوست داری؟", "تگ کن استایلیست‌ها"]
-        },
-        {
-          name: "راهنمای_ترکیب",
-          structure: "قطعه پایه + 3-4 ترکیب مختلف + نکات ست کردن + موقعیت‌های استفاده",
-          best_day: "چهارشنبه",
-          best_time: "19:00-21:00",
-          cta: ["سیو کن برای الهام", "کدوم را دوست داری؟", "کلکسیون کامل در بایو"]
-        },
-        {
-          name: "ترند_فصل",
-          structure: "ترند جدید + چگونگی استایل + برای چه بادی‌ای + نکات خرید",
-          best_day: "شنبه",
-          best_time: "15:00-17:00",
-          cta: ["دنبال می‌کنی این ترند را؟", "فروشگاه ما دارد", "موجودی محدود"]
-        },
-        {
-          name: "قبل_و_بعد_استایل",
-          structure: "استایل قبل + تحلیل مشکل + استایل بعد + نکات کلیدی تغییر",
-          best_day: "سه‌شنبه",
-          best_time: "12:00-14:00",
-          cta: ["مشاوره استایل رایگان", "می‌خوای یاد بگیری؟", "دوره آنلاین ما"]
-        },
-        {
-          name: "راهنمای_سایز_و_فیت",
-          structure: "نوع بدن + سایز مناسب + فیت درست + اشتباهات رایج + محصولات پیشنهادی",
-          best_day: "دوشنبه",
-          best_time: "11:00-13:00",
-          cta: ["راهنمای کامل در بایو", "سوال سایز داری؟", "سیو کن"]
-        },
-        {
-          name: "کپسول_گاردروب",
-          structure: "تعداد قطعه + هر قطعه با عکس + تعداد لوک ممکن + نکات ترکیب",
-          best_day: "پنجشنبه",
-          best_time: "18:00-20:00",
-          cta: ["می‌خوای چک‌لیست؟", "سیو کن", "خرید از بایو"]
-        },
-        {
-          name: "تخفیف_و_کالکشن_جدید",
-          structure: "محصول جدید + استوری محصول + قیمت و تخفیف + محدودیت زمانی/تعدادی",
-          best_day: "جمعه",
-          best_time: "17:00-19:00",
-          cta: ["خرید الان", "موجودی محدوده", "لینک مستقیم در بایو"]
-        }
-      ],
-      hashtag_strategy: {
-        primary: ["مد", "پوشاک", "استایل"],
-        secondary: ["فشن", "لباس", "ست"],
-        niche: []
-      }
-    };
+function createContentPlan(data) {
 
-    let currentStep = 0;
-    let userAnswers = {};
-    let generatedContent = [];
-    let isLoggedIn = false;
+  const {
+    template,
+    category,
+    industry,
+    audience,
+    goal,
+    voice,
+    pain,
+    value,
+    format
+  } = data;
 
-    const questions = [
-      {
-        id: "industry",
-        question: "صنعت و حوزه کاری شما کدام است؟",
-        options: ["صنایع غذایی", "ساخت و ساز", "آموزش و مشاوره", "زیبایی و سلامت", "تکنولوژی و دیجیتال", "پوشاک و مد", "هنر و سرگرمی", "خدمات مالی", "گردشگری و مسافرت", "املاک و مستغلات"]
-      },
-      {
-        id: "business_type",
-        question: "نوع کسب‌وکار شما چیست؟",
-        options: ["محصول فیزیکی", "خدمات حضوری", "خدمات آنلاین", "محتوای دیجیتال", "کافه/رستوران"]
-      },
-      {
-        id: "audience",
-        question: "مخاطب هدف اصلی شما کیست؟",
-        options: ["نوجوانان 13-18", "جوانان 18-25", "بزرگسالان 25-40", "میانسالان 40-60", "کسب‌وکارها B2B"]
-      },
-      {
-        id: "audience_gender",
-        question: "جنسیت غالب مخاطب شما؟",
-        options: ["زنان", "مردان", "هر دو به یک اندازه"]
-      },
-      {
-        id: "content_goal",
-        question: "هدف اصلی از محتوای اینستاگرام؟",
-        options: ["افزایش فروش مستقیم", "ساخت برند و آگاهی", "آموزش و اعتمادسازی", "تعامل و جامعه‌سازی", "ترافیک به وبسایت"]
-      },
-      {
-        id: "brand_voice",
-        question: "شخصیت برند شما چگونه است؟",
-        options: ["حرفه‌ای و رسمی", "دوستانه و صمیمی", "شاد و سرگرم‌کننده", "الهام‌بخش و انگیزشی", "لوکس و منحصربفرد"]
-      },
-      {
-        id: "pain_point",
-        question: "بزرگترین چالش مخاطب شما چیست؟",
-        options: ["کمبود وقت", "کمبود بودجه", "نداشتن اطلاعات کافی", "ترس از اشتباه", "نیاز به راهنمایی"]
-      },
-      {
-        id: "unique_value",
-        question: "ارزش منحصربفرد شما چیست؟",
-        options: ["کیفیت بی‌نظیر", "قیمت رقابتی", "سرعت و راحتی", "تخصص و تجربه", "نوآوری و خلاقیت"]
-      },
-      {
-        id: "engagement_preference",
-        question: "چه نوع تعاملی دوست دارید؟",
-        options: ["کامنت و بحث", "ذخیره و اشتراک", "کلیک و خرید", "پیام مستقیم", "تگ دوستان"]
-      },
-      {
-        id: "content_format",
-        question: "فرمت محتوای محبوب شما؟",
-        options: ["تصویر تک", "کاروسل آموزشی", "ویدیوی کوتاه", "قبل و بعد", "اینفوگرافیک"]
-      }
+  const plans = {
+
+    "دستور پخت سریع": [
+      "هوک در ۳ ثانیه اول",
+      "نمایش سریع نتیجه نهایی",
+      "معرفی مواد / ابزار لازم",
+      "نمایش مراحل به صورت کوتاه و شماره‌گذاری‌شده",
+      "ارائه یک نکته کاربردی یا فوت کوزه‌گری",
+      "دعوت به ذخیره و ارسال برای دوستان"
+    ],
+
+    "قبل و بعد": [
+      "نمایش وضعیت اولیه",
+      "بیان مشکل یا هدف",
+      "نمایش کوتاه فرآیند تغییر",
+      "نمایش نتیجه نهایی",
+      "توضیح مهم‌ترین عامل موفقیت",
+      "CTA برای دریافت مشاوره یا اطلاعات بیشتر"
+    ],
+
+    "نکته تخصصی": [
+      "طرح یک اشتباه یا سؤال رایج",
+      "توضیح اینکه چرا این مسئله مهم است",
+      "ارائه راه‌حل ساده و عملی",
+      "مثال واقعی از کاربرد راه‌حل",
+      "یک نکته تکمیلی تخصصی",
+      "دعوت به ذخیره محتوا"
+    ],
+
+    "پشت صحنه": [
+      "شروع با یک لحظه واقعی و جذاب",
+      "نمایش بخشی از فرآیند کار",
+      "معرفی افراد یا ابزارهای درگیر",
+      "گفتن یک داستان کوتاه",
+      "نمایش نتیجه کار",
+      "دعوت مخاطب برای دیدن محتوای بیشتر"
+    ],
+
+    "کاروسل آموزشی": [
+      "اسلاید ۱: هوک بسیار واضح",
+      "اسلاید ۲: تعریف مشکل",
+      "اسلاید ۳: نکته اول",
+      "اسلاید ۴: نکته دوم",
+      "اسلاید ۵: مثال واقعی",
+      "اسلاید ۶: اشتباه رایج",
+      "اسلاید آخر: CTA"
+    ],
+
+    "نکته سریع 60 ثانیه‌ای": [
+      "ثانیه ۰ تا ۳: هوک",
+      "ثانیه ۳ تا ۱۵: بیان مشکل",
+      "ثانیه ۱۵ تا ۴۵: راه‌حل",
+      "ثانیه ۴۵ تا ۵۵: مثال",
+      "ثانیه ۵۵ تا ۶۰: CTA"
+    ],
+
+    "ترفند سریع": [
+      "نمایش مشکل",
+      "معرفی ترفند",
+      "دموی سریع",
+      "نمایش نتیجه",
+      "بیان میزان زمان یا انرژی ذخیره‌شده",
+      "CTA"
+    ],
+
+    "مقایسه ابزار": [
+      "معرفی دو گزینه",
+      "مقایسه مزایا",
+      "مقایسه معایب",
+      "مناسب چه کسی است؟",
+      "مناسب چه هدفی است؟",
+      "انتخاب پیشنهادی بر اساس نیاز"
+    ],
+
+    "آموزش گام به گام": [
+      "تعریف نتیجه نهایی",
+      "پیش‌نیازها",
+      "مرحله اول",
+      "مرحله دوم",
+      "مرحله سوم",
+      "رفع خطاهای رایج",
+      "CTA"
+    ],
+
+    "چالش تعاملی": [
+      "طرح سؤال جذاب",
+      "ارائه دو یا چند انتخاب",
+      "دعوت به پاسخ",
+      "درخواست تگ کردن دوست",
+      "اعلام زمان نتیجه یا پاسخ",
+      "CTA"
+    ],
+
+    "پیشنهاد ویژه": [
+      "معرفی پیشنهاد",
+      "بیان ارزش اصلی",
+      "دلیل مناسب بودن پیشنهاد",
+      "ایجاد فوریت واقعی",
+      "پاسخ به یک اعتراض رایج",
+      "CTA خرید یا تماس"
+    ],
+
+    "معرفی مقصد": [
+      "نمایش جذاب‌ترین تصویر مقصد",
+      "معرفی کوتاه مکان",
+      "۳ دلیل برای سفر",
+      "هزینه یا نکته کاربردی",
+      "بهترین زمان بازدید",
+      "CTA"
+    ],
+
+    "معرفی ملک": [
+      "نمایش بهترین ویژگی ملک",
+      "معرفی موقعیت",
+      "متراژ و امکانات",
+      "مزیت اصلی نسبت به گزینه‌های مشابه",
+      "مناسب چه نوع خریدار یا سرمایه‌گذاری؟",
+      "CTA برای تماس"
+    ]
+  };
+
+  const selected =
+    plans[template] ||
+    [
+      `هوک مرتبط با ${industry}`,
+      `طرح مسئله اصلی برای ${audience}`,
+      `ارائه یک نکته کاربردی`,
+      `توضیح مزیت ${value}`,
+      `ارتباط محتوا با هدف ${goal}`,
+      `پاسخ به مشکل ${pain}`,
+      `CTA متناسب با برند`
     ];
 
-    // توابع برای دانلود تصویر
-    function showLoading(message) {
-      let loadingDiv = document.getElementById('loading-overlay');
-      if (!loadingDiv) {
-        loadingDiv = document.createElement('div');
-        loadingDiv.id = 'loading-overlay';
-        loadingDiv.className = 'loading-overlay';
-        loadingDiv.innerHTML = `
-          <div class="loading-spinner"></div>
-          <p style="color: #1A1A1A; font-size: 18px; margin-top: 20px;">${message}</p>
-        `;
-        document.body.appendChild(loadingDiv);
-      }
-    }
+  return selected
+    .map((item, index) => `${index + 1}. ${item}`)
+    .join("\n")
+    +
+    `\n\nلحن پیشنهادی: ${voice}`
+    +
+    `\nتمرکز اصلی: ${pain}`
+    +
+    `\nمزیت برند: ${value}`
+    +
+    `\nفرمت: ${format}`;
+}
 
-    function hideLoading() {
-      const loadingDiv = document.getElementById('loading-overlay');
-      if (loadingDiv) {
-        loadingDiv.style.opacity = '0';
-        setTimeout(() => {
-          if (loadingDiv.parentNode) {
-            loadingDiv.parentNode.removeChild(loadingDiv);
-          }
-        }, 300);
-      }
-    }
+function createCTA(goal, engagement, category) {
 
-    function showCopyNotification(message) {
-      const notification = document.createElement('div');
-      notification.className = 'copy-notification';
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translate(-50%, 20px)';
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
-      }, 3000);
-    }
+  if (goal.includes("فروش")) {
+    return randomItem([
+      "برای دریافت قیمت و اطلاعات بیشتر پیام بده",
+      "اگر این محصول را می‌خواهی، همین حالا DM کن",
+      "برای ثبت سفارش از لینک پروفایل استفاده کن"
+    ]);
+  }
 
-    function createImageHTML() {
-      const date = new Date().toLocaleDateString('fa-IR');
-      const industry = userAnswers.industry || "صنایع غذایی";
-      
-      let imageHTML = `
-        <div class="image-container">
-          <div class="image-header">
-            <div class="image-title">📅 تقویم محتوای اینستاگرام</div>
-            <div class="image-subtitle">صنعت: ${industry} | تاریخ: ${date}</div>
-            <div class="image-subtitle">ساخته شده با Koosha co</div>
-          </div>
-          
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; direction: rtl; font-family: 'Vazirmatn', sans-serif;">
-      `;
-      
-      generatedContent.forEach((content, index) => {
-        if (index < 7) { // فقط 7 روز هفته
-          imageHTML += `
-            <div class="image-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: bold;">${content.day}</div>
-                <div style="background: #e0f7fa; color: #006b75; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold;">${content.contentType}</div>
-              </div>
-              
-              <div style="background: #f0f9ff; padding: 12px; border-radius: 12px; margin-bottom: 12px;">
-                <div style="font-size: 11px; color: #486878; font-weight: bold; margin-bottom: 4px;">⏰ بهترین زمان انتشار</div>
-                <div style="font-size: 14px; color: #1A1A1A; font-weight: bold;">${content.bestTime}</div>
-              </div>
-              
-              <div style="background: #f9f9f9; padding: 12px; border-radius: 12px; margin-bottom: 12px; border-right: 4px solid #00a0b0;">
-                <div style="font-size: 12px; color: #006b75; font-weight: bold; margin-bottom: 6px;">🔥 هوک (Hook)</div>
-                <div style="font-size: 14px; color: #1A1A1A; line-height: 1.4;">${content.hook}</div>
-              </div>
-              
-              <div style="margin-bottom: 12px;">
-                <div style="font-size: 11px; color: #666; margin-bottom: 4px; font-weight: bold;">📝 ساختار محتوا:</div>
-                <div style="font-size: 12px; color: #444; line-height: 1.5; white-space: pre-line;">${content.content.split('\n').slice(0, 3).join('\n')}...</div>
-              </div>
-              
-              <div style="background: #050120; color: white; padding: 12px; border-radius: 12px; margin-bottom: 12px;">
-                <div style="font-size: 11px; opacity: 0.9; margin-bottom: 4px;">💬 Call To Action</div>
-                <div style="font-size: 13px; font-weight: bold;">${content.cta}</div>
-              </div>
-              
-              <div style="background: #f0f9ff; padding: 8px; border-radius: 8px; margin-bottom: 12px;">
-                <div style="font-size: 10px; color: #1A1A1A; text-align: center;">
-                  📱 ${content.format} | 🎯 ${content.engagementType}
-                </div>
-              </div>
-              
-              <div style="font-size: 11px; color: #486878; line-height: 1.6;">${content.hashtags.split(' ').slice(0, 5).join(' ')}</div>
+  if (engagement.includes("ذخیره")) {
+    return "این پست را ذخیره کن تا بعداً به آن برگردی.";
+  }
+
+  if (engagement.includes("پیام")) {
+    return "اگر سؤال داری، همین حالا پیام بده.";
+  }
+
+  if (category === "تعامل") {
+    return "نظرت را در کامنت بنویس و این پست را برای دوستت بفرست.";
+  }
+
+  return randomItem([
+    "نظرت را در کامنت بنویس.",
+    "اگر مفید بود ذخیره‌اش کن.",
+    "برای کسی که به این موضوع نیاز دارد ارسالش کن.",
+    "اگر قسمت بعدی را می‌خواهی، کامنت بگذار."
+  ]);
+}
+
+function calculateScore({ goal, category, format, engagement }) {
+
+  let score = 70;
+
+  if (goal.includes("فروش") && category === "فروش") score += 10;
+  if (category === "تعامل" && engagement.includes("کامنت")) score += 8;
+  if (format.includes("ویدیو") && category === "ویدیویی") score += 7;
+  if (category === "آموزشی") score += 3;
+
+  return Math.min(score, 98);
+}
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function renderLogin() {
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <main class="page gradient flex items-center justify-center py-10">
+
+      <section class="container max-w-md">
+
+        <div class="card p-7 sm:p-9 fade-in">
+
+          <div class="text-center">
+
+            <div class="inline-flex p-3 rounded-3xl gradient shadow-xl mb-5">
+              <img
+                src="./koosha-co-logo.png"
+                alt="Koosha co"
+                class="w-24 h-24 rounded-2xl object-cover"
+                onerror="this.style.display='none'"
+              >
             </div>
-          `;
-        }
-      });
-      
-      imageHTML += `
+
+            <h1 class="text-3xl font-black mb-3">
+              ${escapeHTML(config.app_title)}
+            </h1>
+
+            <p class="text-slate-500 leading-8">
+              تقویم محتوای هوشمند اینستاگرام
+            </p>
+
           </div>
-          
-          <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 16px; text-align: center;">
-            <div style="font-size: 16px; color: #1A1A1A; font-weight: bold; margin-bottom: 10px;">🎯 نکات طلایی برای موفقیت</div>
-            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 15px;">
-              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
-                <div style="font-size: 12px; color: #050120; font-weight: bold; margin-bottom: 5px;">⏰ زمان‌بندی</div>
-                <div style="font-size: 10px; color: #666;">به زمان پیشنهادی پایبند باشید</div>
-              </div>
-              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
-                <div style="font-size: 12px; color: #006b75; font-weight: bold; margin-bottom: 5px;">💬 تعامل</div>
-                <div style="font-size: 10px; color: #666;">۱۵ دقیقه اول به کامنت‌ها پاسخ دهید</div>
-              </div>
-              <div style="flex: 1; background: white; padding: 12px; border-radius: 12px; text-align: center;">
-                <div style="font-size: 12px; color: #050120; font-weight: bold; margin-bottom: 5px;">📊 تحلیل</div>
-                <div style="font-size: 10px; color: #666;">تقویم را هفتگی بررسی و به‌روزرسانی کنید</div>
-              </div>
+
+          <form id="loginForm" class="mt-8">
+
+            <label
+              for="password"
+              class="block font-bold mb-2"
+            >
+              رمز ورود
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              class="login-input"
+              placeholder="رمز عبور را وارد کنید"
+              autocomplete="current-password"
+              required
+            >
+
+            <div
+              id="loginError"
+              class="hidden mt-3 p-3 rounded-xl bg-red-50 text-red-700 text-sm font-semibold"
+            >
+              رمز ورود صحیح نیست.
             </div>
+
+            <button
+              type="submit"
+              class="gradient w-full mt-5 py-4 rounded-xl text-white font-black text-lg shadow-lg hover:opacity-90 transition"
+            >
+              ورود به برنامه
+            </button>
+
+          </form>
+
+          <div class="mt-7 pt-5 border-t text-center text-xs text-slate-400">
+            ${escapeHTML(config.logo_text)}
           </div>
-          
-          <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #666; font-size: 12px;">
-            برای اطلاعات بیشتر به koosha.co مراجعه کنید
-          </div>
+
         </div>
-      `;
-      
-      return imageHTML;
+
+      </section>
+
+    </main>
+  `;
+
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", handleLogin);
+}
+
+function handleLogin(event) {
+
+  event.preventDefault();
+
+  const password =
+    document.getElementById("password").value;
+
+  if (password === config.login_password) {
+
+    state.loggedIn = true;
+
+    if (
+      state.generated.length === 7 &&
+      Object.keys(state.answers).length === QUESTIONS.length
+    ) {
+      renderResults();
+    } else {
+      renderQuestionnaire();
     }
 
-    function downloadImage() {
-      showLoading('در حال ایجاد تصویر از نتایج...');
-      
-      // ایجاد یک div موقت برای تصویر
-      const tempDiv = document.createElement('div');
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.left = '-10000px';
-      tempDiv.style.top = '0';
-      tempDiv.style.width = '1000px';
-      tempDiv.style.padding = '40px';
-      tempDiv.style.background = '#ffffff';
-      tempDiv.style.fontFamily = "'Vazirmatn', sans-serif";
-      tempDiv.style.direction = 'rtl';
-      
-      // اضافه کردن HTML ساختارمند شده
-      tempDiv.innerHTML = createImageHTML();
-      
-      // اضافه کردن به body
-      document.body.appendChild(tempDiv);
-      
-      // صبر کردن کمی برای لود شدن فونت‌ها
-      setTimeout(() => {
-        html2canvas(tempDiv, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          logging: false,
-          width: tempDiv.offsetWidth,
-          height: tempDiv.offsetHeight,
-          onclone: function(clonedDoc) {
-            // اطمینان از اعمال استایل‌ها
-            const clonedDiv = clonedDoc.querySelector('div[style*="left: -10000px"]');
-            if (clonedDiv) {
-              clonedDiv.style.fontFamily = "'Vazirmatn', sans-serif";
-              clonedDiv.style.direction = 'rtl';
-            }
-          }
-        }).then(canvas => {
-          // ایجاد لینک دانلود
-          const link = document.createElement('a');
-          const date = new Date().toLocaleDateString('fa-IR').replace(/\//g, '-');
-          link.download = `تقویم-محتوای-اینستاگرام-${date}.png`;
-          link.href = canvas.toDataURL('image/png');
-          
-          // حذف div موقت
-          document.body.removeChild(tempDiv);
-          
-          // تریگر دانلود
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          
-          hideLoading();
-          showCopyNotification('تصویر نتایج با موفقیت دانلود شد!');
-        }).catch(error => {
-          // حذف div موقت در صورت خطا
-          if (tempDiv.parentNode) {
-            document.body.removeChild(tempDiv);
-          }
-          hideLoading();
-          console.error('Error generating image:', error);
-          showCopyNotification('خطا در ایجاد تصویر. لطفاً دوباره امتحان کنید.');
-        });
-      }, 1000);
-    }
+  } else {
 
-    function renderLogin() {
-      const app = document.getElementById('app');
-      app.innerHTML = `
-        <div class="w-full h-screen flex items-center justify-center instagram-gradient">
-          <div class="w-full max-w-md mx-4 p-8 rounded-3xl shadow-2xl fade-in" style="background-color: ${config.secondary_color};">
-            <div class="text-center mb-8">
-              <div class="inline-block px-8 py-4 rounded-full mb-6">
-                <img 
-                  src="./koosha-co-logo.png" 
-                  alt="logo" 
-                  class="w-20 h-20 rounded-full object-cover"
+    const error =
+      document.getElementById("loginError");
+
+    error.classList.remove("hidden");
+
+  }
+}
+
+/* =========================================================
+   QUESTIONNAIRE
+========================================================= */
+
+function renderQuestionnaire() {
+
+  const question = QUESTIONS[state.currentStep];
+
+  const progress =
+    ((state.currentStep + 1) / QUESTIONS.length) * 100;
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <main
+      class="page py-6 sm:py-10"
+      style="background:${escapeHTML(config.background_color)}"
+    >
+
+      <div class="container">
+
+        <header class="mb-6">
+
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+
+            <div class="flex items-center gap-3">
+
+              <div class="p-2 rounded-2xl gradient">
+                <img
+                  src="./koosha-co-logo.png"
+                  alt="Koosha"
+                  class="w-12 h-12 rounded-xl object-cover"
+                  onerror="this.style.display='none'"
                 >
               </div>
-              <h2 class="font-bold mb-3" style="color: ${config.text_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;">${config.app_title}</h2>
-              <p style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">وارد شوید تا محتوای حرفه‌ای برای اینستاگرام بسازید.</p>
-            </div>
-            <form id="loginForm" class="space-y-5">
+
               <div>
-                <label for="password" class="block mb-2 font-semibold" style="color: ${config.text_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">رمز ورود</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  class="w-full px-5 py-4 rounded-xl border-2 focus:outline-none transition-all"
-                  style="border-color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;"
-                  placeholder="رمز عبور خود را وارد کنید"
-                  required
-                />
-              </div>
-              <div id="errorMessage" class="hidden p-4 rounded-xl text-center" style="background-color: #FEE2E2; color: #991B1B; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">
-                ❌ رمز عبور اشتباه است!
-              </div>
-              <button 
-                type="submit" 
-                class="w-full py-4 rounded-xl font-bold transition-all hover:opacity-90 instagram-gradient"
-                style="color: ${config.secondary_color}; font-size: ${config.font_size * 1.2}px; font-family: ${config.font_family}, sans-serif;"
-              >
-                ورود به برنامه
-              </button>
-            </form>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const password = document.getElementById('password').value;
-        const errorMessage = document.getElementById('errorMessage');
-        
-        if (password === config.login_password) {
-          isLoggedIn = true;
-          errorMessage.classList.add('hidden');
-          renderQuestionnaire();
-        } else {
-          errorMessage.classList.remove('hidden');
-        }
-      });
-    }
-
-    function renderQuestionnaire() {
-      const app = document.getElementById('app');
-      const currentQuestion = questions[currentStep];
-      const progress = ((currentStep + 1) / questions.length) * 100;
-
-      app.innerHTML = `
-        <div class="w-full min-h-full" style="background-color: ${config.background_color};">
-          <div class="w-full max-w-5xl mx-auto px-4 py-8">
-            <div class="mb-8">
-              <div class="flex items-center justify-between mb-6">
-                <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full instagram-gradient">
-                  <img 
-                    src="./koosha-co-logo.png" 
-                    alt="logo" 
-                    class="w-16 h-16 rounded-full object-cover"
-                  >
-                  <span 
-                    class="font-bold"
-                    style="
-                      color: ${config.secondary_color};
-                      font-size: ${config.font_size * 1.1}px;
-                      font-family: ${config.font_family}, sans-serif;
-                    "
-                  >
-                    ${config.logo_text}
-                  </span>
+                <div class="font-black text-lg">
+                  ${escapeHTML(config.logo_text)}
                 </div>
-                <span class="font-semibold" style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">سوال ${currentStep + 1} از ${questions.length}</span>
+                <div class="text-xs opacity-70">
+                  Content Planner
+                </div>
               </div>
-              <div class="w-full h-3 rounded-full overflow-hidden" style="background-color: ${config.secondary_color};">
-                <div class="h-full transition-all duration-500 rounded-full instagram-gradient" style="width: ${progress}%;"></div>
-              </div>
+
             </div>
 
-            <div class="p-10 rounded-3xl shadow-2xl fade-in" style="background-color: ${config.secondary_color};">
-              <h2 class="mb-10 font-bold" style="color: ${config.text_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;">${currentQuestion.question}</h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                ${currentQuestion.options.map((option, index) => `
-                  <button 
-                    onclick="selectOption('${currentQuestion.id}', '${option}')"
-                    class="p-5 rounded-2xl text-right transition-all hover:shadow-xl relative overflow-hidden group"
-                    style="border: 3px solid #050120; color: ${config.text_color}; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;"
-                  >
-                    <div class="absolute inset-0 instagram-gradient opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                    <span class="inline-block w-10 h-10 rounded-full text-center leading-10 ml-3 font-bold relative z-10" style="background-color: #050120; color: ${config.secondary_color}; font-size: ${config.font_size}px;">${index + 1}</span>
-                    <span class="relative z-10">${option}</span>
-                  </button>
-                `).join('')}
-              </div>
+            <div class="font-bold text-sm opacity-70">
+              سؤال ${state.currentStep + 1}
+              از ${QUESTIONS.length}
+            </div>
 
-              ${currentStep > 0 ? `
-                <button 
-                  onclick="previousStep()"
-                  class="mt-8 px-8 py-4 rounded-xl transition-all hover:shadow-lg"
-                  style="border: 3px solid #050120; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; font-weight: 600;"
+          </div>
+
+          <div class="progress-track">
+            <div
+              class="progress-bar gradient"
+              style="width:${progress}%"
+            ></div>
+          </div>
+
+        </header>
+
+        <section class="card p-5 sm:p-9 fade-in">
+
+          <div class="mb-8">
+
+            <div class="inline-flex tag bg-cyan-50 text-cyan-800 mb-4">
+              مرحله ${state.currentStep + 1}
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-black leading-relaxed">
+              ${escapeHTML(question.title)}
+            </h1>
+
+            ${
+              question.description
+                ? `
+                  <p class="mt-3 text-slate-500 leading-8">
+                    ${escapeHTML(question.description)}
+                  </p>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            ${question.options.map((option, index) => {
+
+              const selected =
+                state.answers[question.id] === option;
+
+              return `
+                <button
+                  type="button"
+                  class="option-card ${selected ? "selected" : ""}"
+                  data-option-index="${index}"
                 >
-                   بازگشت
+
+                  <div class="flex items-center gap-4">
+
+                    <span class="option-number">
+                      ${index + 1}
+                    </span>
+
+                    <span class="font-bold leading-7">
+                      ${escapeHTML(option)}
+                    </span>
+
+                  </div>
+
                 </button>
-              ` : ''}
-            </div>
+              `;
+
+            }).join("")}
+
           </div>
-        </div>
-      `;
-    }
 
-    function selectOption(questionId, answer) {
-      userAnswers[questionId] = answer;
-      
-      if (currentStep < questions.length - 1) {
-        currentStep++;
-        renderQuestionnaire();
-      } else {
-        generateContent();
-        renderResults();
-      }
-    }
+          <div class="flex flex-wrap justify-between gap-3 mt-8">
 
-    function previousStep() {
-      if (currentStep > 0) {
-        currentStep--;
-        renderQuestionnaire();
-      }
-    }
+            ${
+              state.currentStep > 0
+                ? `
+                  <button
+                    type="button"
+                    id="backBtn"
+                    class="px-6 py-3 rounded-xl border-2 border-slate-900 font-bold"
+                  >
+                    ← بازگشت
+                  </button>
+                `
+                : `<div></div>`
+            }
 
-    function generateContent() {
-      const industry = userAnswers.industry || "صنایع غذایی";
-      const strategy = contentStrategies[industry];
-      
-      if (!strategy) return;
+            <div class="text-sm text-slate-400 flex items-center">
+              با انتخاب گزینه، مرحله بعد باز می‌شود
+            </div>
 
-      generatedContent = strategy.content_types.map((contentType, index) => {
-        const hook = strategy.hooks[index % strategy.hooks.length];
-        const randomNumber = Math.floor(Math.random() * 5) + 3;
-        const randomPercentage = Math.floor(Math.random() * 30) + 70;
-        
-        let filledHook = hook
-          .replace('{number}', randomNumber)
-          .replace('{percentage}', randomPercentage)
-          .replace('{topic}', userAnswers.business_type || 'کسب‌وکار')
-          .replace('{target_audience}', userAnswers.audience || 'مخاطبان')
-          .replace('{goal}', userAnswers.content_goal || 'موفقیت')
-          .replace('{result}', 'نتیجه‌ای عالی');
+          </div>
 
-        const mainContent = `
-          ${contentType.structure}
-          
-          💡 نکته استراتژیک: با توجه به اینکه مخاطبان شما ${userAnswers.audience} هستند و هدفتان ${userAnswers.content_goal} است، این محتوا باید ${userAnswers.brand_voice} باشد.
-          
-          🎯 فوکوس: ${userAnswers.pain_point} مخاطبان را حل کنید با تاکید بر ${userAnswers.unique_value} شما.
-        `;
+        </section>
 
-        const ctaOptions = contentType.cta;
-        const selectedCta = ctaOptions[Math.floor(Math.random() * ctaOptions.length)];
+      </div>
 
-        const hashtags = [
-          ...strategy.hashtag_strategy.primary,
-          ...strategy.hashtag_strategy.secondary,
-          userAnswers.business_type?.replace(/\s+/g, '_'),
-          userAnswers.content_goal?.replace(/\s+/g, '_'),
-        ].filter(Boolean).slice(0, 10).map(tag => `#${tag}`).join(' ');
+    </main>
+  `;
 
-        return {
-          day: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"][index],
-          contentType: contentType.name,
-          bestTime: contentType.best_time,
-          hook: filledHook,
-          content: mainContent,
-          cta: selectedCta,
-          hashtags: hashtags,
-          format: userAnswers.content_format || "تصویر تک",
-          engagementType: userAnswers.engagement_preference || "کامنت و بحث"
-        };
+  document
+    .querySelectorAll("[data-option-index]")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const index =
+          Number(button.dataset.optionIndex);
+
+        const answer =
+          question.options[index];
+
+        state.answers[question.id] = answer;
+
+        saveState();
+
+        if (state.currentStep < QUESTIONS.length - 1) {
+
+          state.currentStep++;
+          renderQuestionnaire();
+
+        } else {
+
+          showLoader("در حال ساخت تقویم محتوایی شما...");
+
+          setTimeout(() => {
+
+            state.generated = generateContent();
+
+            saveState();
+
+            hideLoader();
+
+            renderResults();
+
+          }, 450);
+
+        }
+
       });
-    }
 
-    function renderResults() {
-      const app = document.getElementById('app');
-      
-      app.innerHTML = `
-        <div class="w-full min-h-full" style="background-color: ${config.background_color};">
-          <div class="w-full max-w-7xl mx-auto px-4 py-8">
-           <div class="mb-8 p-6 rounded-3xl shadow-lg flex items-center justify-center flex-wrap gap-4"
-     style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);">
+    });
 
-              <div style=" display: flex;
-    justify-content: center;
-    align-items: center;">
-                <h1 class="font-medium mb-2" style="text-align: center; color: ${config.secondary_color}; font-size: ${config.font_size * 2}px; font-family: ${config.font_family}, sans-serif;"> تقویم محتوای هفتگی شما آمادست. </h1>
+  document
+    .getElementById("backBtn")
+    ?.addEventListener("click", () => {
+
+      state.currentStep--;
+
+      renderQuestionnaire();
+
+    });
+}
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+function renderResults() {
+
+  const industry =
+    state.answers.industry || "کسب‌وکار شما";
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <main
+      class="page py-6 sm:py-10"
+      style="background:${escapeHTML(config.background_color)}"
+    >
+
+      <div class="container">
+
+        <header class="gradient text-white rounded-3xl p-6 sm:p-8 shadow-2xl mb-7">
+
+          <div class="flex flex-col lg:flex-row items-center justify-between gap-5">
+
+            <div>
+
+              <div class="text-sm opacity-80 mb-2">
+                ${escapeHTML(config.logo_text)}
               </div>
-              <button 
-                onclick="downloadImage()"
-                class="px-6 py-3 rounded-xl font-bold transition-all hover:shadow-lg flex items-center gap-2"
-              style="
-    background: ${config.secondary_color};
-    color: #050120;
-    font-size: ${config.font_size * 1.1}px;
-    font-family: ${config.font_family}, sans-serif;
-    border: 2px solid #050120;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  "
+
+              <h1 class="text-2xl sm:text-4xl font-black leading-relaxed">
+                تقویم محتوایی هفتگی شما آماده است 🎉
+              </h1>
+
+              <p class="mt-3 opacity-90">
+                حوزه:
+                <strong>${escapeHTML(industry)}</strong>
+              </p>
+
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+
+              <button
+                id="downloadBtn"
+                class="px-5 py-3 rounded-xl bg-white text-slate-900 font-black shadow-lg hover:scale-[1.02] transition"
               >
-                <span style="text-align: center;">📷 دانلود تصویر</span>
+                📷 دانلود تصویر
               </button>
+
+              <button
+                id="copyAllBtn"
+                class="px-5 py-3 rounded-xl bg-slate-950 text-white font-black shadow-lg hover:scale-[1.02] transition"
+              >
+                📋 کپی کل محتوا
+              </button>
+
             </div>
 
-            <div id="results-content">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                ${generatedContent.map((content, index) => `
-                  <div class="p-6 rounded-3xl shadow-xl card-hover fade-in" style="background-color: ${config.secondary_color}; animation-delay: ${index * 0.1}s; border: 2px solid #050120;">
-                    <div class="flex items-center justify-between mb-5">
-                      <span class="px-5 py-2 rounded-full font-bold" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.day}</span>
-                      <span class="px-4 py-1 rounded-full text-xs font-semibold" style="background-color: ${config.background_color}; color: ${config.text_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">${content.contentType}</span>
-                    </div>
-                    
-                    <div class="mb-4 p-4 rounded-xl" style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%);15, ${config.accent_color}15);">
-                      <p class="text-xs font-bold mb-1 flex items-center gap-2" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">
-                        ⏰ بهترین زمان انتشار ⏰
-                      </p>
-                      <p class="font-bold" style="color: ${config.text_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">${content.bestTime}</p>
-                    </div>
-
-                    <div class="mb-4 p-4 rounded-xl" style="background-color: ${config.background_color};">
-                      <p class="text-sm font-bold mb-2 flex items-center gap-2" style="color: ${config.accent_color}; font-size: ${config.font_size * 0.9}px; font-family: ${config.font_family}, sans-serif;">
-                        🔥 هوک (Hook)
-                      </p>
-                      <p class="font-semibold" style="color: ${config.text_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.hook}</p>
-                    </div>
-                    
-                    <div class="mb-4">
-                      <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; opacity: 0.7; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">📝 ساختار محتوا:</p>
-                      <p class="leading-relaxed" style="color: ${config.text_color}; opacity: 0.85; font-size: ${config.font_size * 0.85}px; line-height: 1.8; font-family: ${config.font_family}, sans-serif; white-space: pre-line;">${content.content}</p>
-                    </div>
-
-                    <div class="mb-4 p-4 rounded-xl" style="background-color: #050120; opacity: 0.95;">
-                      <p class="text-xs font-bold mb-1" style="color: ${config.secondary_color}; font-size: ${config.font_size * 0.8}px; font-family: ${config.font_family}, sans-serif;">💬 Call To Action</p>
-                      <p class="font-bold" style="color: ${config.secondary_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">${content.cta}</p>
-                    </div>
-
-                    <div class="mb-4 p-3 rounded-xl" style="background-color: ${config.background_color};">
-                      <p class="text-xs font-bold mb-2" style="color: ${config.text_color}; font-size: ${config.font_size * 0.75}px; font-family: ${config.font_family}, sans-serif;">
-                        📱 فرمت: ${content.format} | 🎯 تعامل: ${content.engagementType}
-                      </p>
-                    </div>
-                    
-                    <p class="text-sm leading-relaxed" style="color: #050120; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif; line-height: 1.6;">${content.hashtags}</p>
-                  </div>
-                `).join('')}
-              </div>
-
-              <div class="mt-12 p-8 rounded-3xl shadow-xl text-center" style="background: linear-gradient(135deg, ${config.secondary_color}, ${config.background_color});">
-                <h3 class="font-bold mb-4" style="color: ${config.text_color}; font-size: ${config.font_size * 1.5}px; font-family: ${config.font_family}, sans-serif;">🎯 نکات طلایی برای موفقیت در اینستاگرام 🎯</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                    <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">⏰ زمان‌بندی</p>
-                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">به زمان پیشنهادی پایبند باشید</p>
-                  </div>
-                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                    <p class="font-bold mb-2" style="color: ${config.accent_color}; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">💬 تعامل</p>
-                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">۱۵ دقیقه اول به کامنت‌ها پاسخ دهید</p>
-                  </div>
-                  <div class="p-4 rounded-xl" style="background-color: ${config.secondary_color};">
-                    <p class="font-bold mb-2" style="color: #050120; font-size: ${config.font_size}px; font-family: ${config.font_family}, sans-serif;">📊 تحلیل</p>
-                    <p style="color: ${config.text_color}; opacity: 0.8; font-size: ${config.font_size * 0.85}px; font-family: ${config.font_family}, sans-serif;">تقویم منتخب را با آنالیز-آپدیت Koosha co هفتگی بررسی کنید</p>
-                  </div>
-                </div>
-                
-                <div class="flex flex-wrap justify-center gap-4 mt-8">
-                  <button 
-                    onclick="downloadImage()"
-                    class="px-8 py-4 rounded-xl transition-all hover:shadow-xl flex items-center gap-2 font-bold"
-                    style="background: linear-gradient(45deg, #486878 25%, #7591a2 50%, #3e6fb4 75%, #00a0b0 100%); color: ${config.secondary_color}; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif;"
-                  >
-                    📷 دانلود تصویر نتایج
-                  </button>
-                  
-                  <button 
-                    onclick="startOver()"
-                    class="px-8 py-4 rounded-xl transition-all hover:shadow-xl"
-                    style="border: 3px solid #050120; color: #050120; font-size: ${config.font_size * 1.1}px; font-family: ${config.font_family}, sans-serif; font-weight: 700;"
-                  >
-                    🔄 شروع مجدد با پاسخ‌های جدید
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
+
+        </header>
+
+        ${renderSummary()}
+
+        <section
+          class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
+          id="resultsGrid"
+        >
+          ${state.generated.map(renderContentCard).join("")}
+        </section>
+
+        <section class="card p-6 sm:p-8 mt-7">
+
+          <div class="text-center">
+
+            <h2 class="text-2xl font-black mb-3">
+              🎯 استراتژی پیشنهادی هفته
+            </h2>
+
+            <p class="text-slate-500 leading-8 max-w-3xl mx-auto">
+              ترکیب این هفته بر اساس صنعت،
+              هدف بازاریابی،
+              مخاطب،
+              لحن برند و فرمت انتخابی شما ساخته شده است.
+              پیشنهاد می‌شود بعد از انتشار هر محتوا،
+              عملکرد آن را بررسی کرده و هفته بعد بر اساس داده واقعی اصلاح کنید.
+            </p>
+
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
+
+            <div class="summary-item text-center">
+              <div class="text-2xl mb-2">⏰</div>
+              <strong>زمان‌بندی</strong>
+              <p class="text-xs text-slate-500 mt-2">
+                زمان پیشنهادی هر محتوا را با Insight صفحه خود مقایسه کنید.
+              </p>
+            </div>
+
+            <div class="summary-item text-center">
+              <div class="text-2xl mb-2">💬</div>
+              <strong>تعامل</strong>
+              <p class="text-xs text-slate-500 mt-2">
+                بعد از انتشار، به کامنت‌ها و پیام‌ها پاسخ دهید.
+              </p>
+            </div>
+
+            <div class="summary-item text-center">
+              <div class="text-2xl mb-2">📊</div>
+              <strong>تحلیل</strong>
+              <p class="text-xs text-slate-500 mt-2">
+                محتوای موفق را شناسایی و در هفته بعد تکرار و بهینه کنید.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-3 mt-8">
+
+            <button
+              id="restartBtn"
+              class="px-6 py-3 rounded-xl border-2 border-slate-900 font-black"
+            >
+              🔄 ساخت تقویم جدید
+            </button>
+
+            <button
+              id="editBtn"
+              class="px-6 py-3 rounded-xl border-2 border-cyan-700 text-cyan-800 font-black"
+            >
+              ✏️ ویرایش پاسخ‌ها
+            </button>
+
+          </div>
+
+        </section>
+
+        <footer class="text-center text-xs text-slate-500 py-8">
+          ساخته شده با ${escapeHTML(config.logo_text)}
+        </footer>
+
+      </div>
+
+    </main>
+  `;
+
+  bindResultsEvents();
+}
+
+function renderSummary() {
+
+  const answers = state.answers;
+
+  const items = [
+    ["🏢", "حوزه", answers.industry],
+    ["🎯", "هدف", answers.content_goal],
+    ["👥", "مخاطب", answers.audience],
+    ["🎨", "لحن", answers.brand_voice]
+  ];
+
+  return `
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-7">
+
+      ${items.map(item => `
+        <div class="card p-4">
+
+          <div class="text-xl mb-2">
+            ${item[0]}
+          </div>
+
+          <div class="text-xs text-slate-400 mb-1">
+            ${escapeHTML(item[1])}
+          </div>
+
+          <div class="font-bold text-sm leading-6">
+            ${escapeHTML(item[2])}
+          </div>
+
         </div>
-      `;
+      `).join("")}
+
+    </section>
+  `;
+}
+
+function renderContentCard(content, index) {
+
+  return `
+    <article
+      class="card content-card p-5 fade-in"
+      style="animation-delay:${index * .05}s"
+    >
+
+      <div class="flex items-center justify-between gap-2 mb-5">
+
+        <span class="tag gradient text-white">
+          ${escapeHTML(content.day)}
+        </span>
+
+        <span class="tag bg-slate-100 text-slate-700">
+          ${escapeHTML(content.template)}
+        </span>
+
+      </div>
+
+      <div class="section-box bg-cyan-50">
+
+        <div class="section-title">
+          ⏰ بهترین زمان انتشار
+        </div>
+
+        <strong>
+          ${escapeHTML(content.bestTime)}
+        </strong>
+
+      </div>
+
+      <div class="section-box bg-slate-50">
+
+        <div class="flex items-center justify-between gap-2 mb-2">
+
+          <div class="section-title mb-0">
+            🔥 هوک
+          </div>
+
+          <button
+            class="copy-btn"
+            data-copy="${encodeURIComponent(content.hook)}"
+          >
+            کپی
+          </button>
+
+        </div>
+
+        <p class="font-bold leading-7">
+          ${escapeHTML(content.hook)}
+        </p>
+
+      </div>
+
+      <div class="section-box bg-slate-50">
+
+        <div class="flex items-center justify-between gap-2 mb-2">
+
+          <div class="section-title mb-0">
+            📝 سناریو / ساختار
+          </div>
+
+          <button
+            class="copy-btn"
+            data-copy="${encodeURIComponent(content.content)}"
+          >
+            کپی
+          </button>
+
+        </div>
+
+        <p
+          class="text-sm leading-8 whitespace-pre-line text-slate-700"
+        >
+          ${escapeHTML(content.content)}
+        </p>
+
+      </div>
+
+      <div class="section-box bg-slate-950 text-white">
+
+        <div class="flex items-center justify-between gap-2 mb-2">
+
+          <div class="text-xs font-black opacity-70">
+            💬 CTA
+          </div>
+
+          <button
+            class="copy-btn"
+            data-copy="${encodeURIComponent(content.cta)}"
+          >
+            کپی
+          </button>
+
+        </div>
+
+        <p class="font-bold leading-7">
+          ${escapeHTML(content.cta)}
+        </p>
+
+      </div>
+
+      <div class="section-box bg-slate-50">
+
+        <div class="text-xs font-black text-slate-500 mb-2">
+          📱 فرمت محتوا
+        </div>
+
+        <div class="font-bold text-sm">
+          ${escapeHTML(content.format)}
+        </div>
+
+        <div class="text-xs text-slate-500 mt-2">
+          🎯 تعامل:
+          ${escapeHTML(content.engagement)}
+        </div>
+
+      </div>
+
+      <div class="mt-auto">
+
+        <div class="flex items-center justify-between mb-2">
+
+          <span class="text-xs font-bold text-slate-500">
+            امتیاز پیشنهادی
+          </span>
+
+          <strong class="text-sm">
+            ${content.score}/100
+          </strong>
+
+        </div>
+
+        <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+
+          <div
+            class="h-full gradient rounded-full"
+            style="width:${content.score}%"
+          ></div>
+
+        </div>
+
+        <div class="mt-4 text-xs leading-6 text-slate-500">
+          ${escapeHTML(content.hashtags)}
+        </div>
+
+        <button
+          class="copy-btn mt-3 w-full"
+          data-copy="${encodeURIComponent(content.hashtags)}"
+        >
+          📋 کپی هشتگ‌ها
+        </button>
+
+      </div>
+
+    </article>
+  `;
+}
+
+/* =========================================================
+   RESULT EVENTS
+========================================================= */
+
+function bindResultsEvents() {
+
+  document
+    .querySelectorAll("[data-copy]")
+    .forEach(button => {
+
+      button.addEventListener("click", async () => {
+
+        const value =
+          decodeURIComponent(button.dataset.copy);
+
+        await copyText(value);
+
+      });
+
+    });
+
+  document
+    .getElementById("downloadBtn")
+    ?.addEventListener("click", downloadImage);
+
+  document
+    .getElementById("copyAllBtn")
+    ?.addEventListener("click", copyAllContent);
+
+  document
+    .getElementById("restartBtn")
+    ?.addEventListener("click", restart);
+
+  document
+    .getElementById("editBtn")
+    ?.addEventListener("click", editAnswers);
+}
+
+async function copyText(text) {
+
+  try {
+
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+    } else {
+
+      const textarea =
+        document.createElement("textarea");
+
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      document.execCommand("copy");
+
+      textarea.remove();
     }
 
-    function startOver() {
-      currentStep = 0;
-      userAnswers = {};
-      generatedContent = [];
-      isLoggedIn = false;
-      renderLogin();
-    }
+    showToast("با موفقیت کپی شد ✓");
 
-    // اضافه کردن توابع به window برای دسترسی از HTML
-    window.selectOption = selectOption;
-    window.previousStep = previousStep;
-    window.startOver = startOver;
-    window.downloadImage = downloadImage;
+  } catch (error) {
 
-    async function onConfigChange(newConfig) {
-      Object.assign(config, newConfig);
-      
-      if (!isLoggedIn) {
-        renderLogin();
-      } else if (generatedContent.length > 0) {
-        renderResults();
-      } else {
-        renderQuestionnaire();
+    console.error(error);
+    showToast("کپی کردن انجام نشد.");
+
+  }
+}
+
+async function copyAllContent() {
+
+  const text = state.generated.map((item, index) => {
+
+    return `
+${item.day}
+نوع محتوا: ${item.template}
+زمان: ${item.bestTime}
+
+هوک:
+${item.hook}
+
+ساختار:
+${item.content}
+
+CTA:
+${item.cta}
+
+فرمت:
+${item.format}
+
+هشتگ‌ها:
+${item.hashtags}
+
+-----------------------------
+`;
+
+  }).join("\n");
+
+  await copyText(text);
+}
+
+/* =========================================================
+   IMAGE DOWNLOAD
+========================================================= */
+
+async function downloadImage() {
+
+  if (
+    typeof html2canvas === "undefined"
+  ) {
+    showToast("کتابخانه ساخت تصویر بارگذاری نشده است.");
+    return;
+  }
+
+  showLoader("در حال ساخت تصویر تقویم...");
+
+  let wrapper = null;
+
+  try {
+
+    wrapper =
+      document.createElement("div");
+
+    wrapper.className = "download-area";
+
+    wrapper.innerHTML =
+      createDownloadHTML();
+
+    document.body.appendChild(wrapper);
+
+    await waitForFonts();
+
+    await new Promise(resolve =>
+      setTimeout(resolve, 250)
+    );
+
+    const canvas =
+      await html2canvas(wrapper, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        allowTaint: false,
+        logging: false
+      });
+
+    const link =
+      document.createElement("a");
+
+    const date =
+      new Date()
+        .toLocaleDateString("fa-IR")
+        .replace(/\//g, "-");
+
+    link.download =
+      `Koosha-Instagram-Content-${date}.png`;
+
+    link.href =
+      canvas.toDataURL("image/png", 1);
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    showToast("تصویر تقویم با موفقیت ساخته شد ✓");
+
+  } catch (error) {
+
+    console.error("Image error:", error);
+
+    showToast(
+      "ساخت تصویر با خطا مواجه شد. دوباره تلاش کنید."
+    );
+
+  } finally {
+
+    wrapper?.remove();
+    hideLoader();
+
+  }
+}
+
+async function waitForFonts() {
+
+  if (document.fonts?.ready) {
+    try {
+      await document.fonts.ready;
+    } catch (_) {}
+  }
+}
+
+function createDownloadHTML() {
+
+  const date =
+    new Date().toLocaleDateString("fa-IR");
+
+  return `
+    <div class="download-inner">
+
+      <div
+        class="download-header"
+        style="
+          background:
+          linear-gradient(
+            135deg,
+            #486878,
+            #3e6fb4,
+            #00a0b0
+          );
+        "
+      >
+
+        <div style="font-size:32px;font-weight:900;">
+          📅 تقویم محتوای اینستاگرام
+        </div>
+
+        <div style="font-size:18px;margin-top:10px;">
+          ${escapeHTML(state.answers.industry || "کسب‌وکار")}
+        </div>
+
+        <div style="font-size:14px;margin-top:6px;opacity:.85;">
+          ${date} | ${escapeHTML(config.logo_text)}
+        </div>
+
+      </div>
+
+      <div class="download-grid">
+
+        ${state.generated.map(item => `
+
+          <div class="download-card">
+
+            <div style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              margin-bottom:15px;
+              gap:10px;
+            ">
+
+              <strong style="
+                background:#050120;
+                color:#fff;
+                padding:7px 13px;
+                border-radius:99px;
+              ">
+                ${escapeHTML(item.day)}
+              </strong>
+
+              <span style="
+                font-size:12px;
+                font-weight:bold;
+                color:#006b75;
+              ">
+                ${escapeHTML(item.template)}
+              </span>
+
+            </div>
+
+            <div style="
+              background:#eefbfc;
+              padding:12px;
+              border-radius:12px;
+              margin-bottom:12px;
+            ">
+              <strong style="
+                font-size:11px;
+                color:#006b75;
+              ">
+                ⏰ زمان انتشار
+              </strong>
+
+              <div style="
+                margin-top:5px;
+                font-weight:800;
+              ">
+                ${escapeHTML(item.bestTime)}
+              </div>
+            </div>
+
+            <div style="
+              background:#f8fafc;
+              padding:12px;
+              border-radius:12px;
+              margin-bottom:12px;
+            ">
+              <strong style="
+                font-size:11px;
+                color:#006b75;
+              ">
+                🔥 هوک
+              </strong>
+
+              <div style="
+                margin-top:6px;
+                font-size:14px;
+                line-height:1.8;
+                font-weight:700;
+              ">
+                ${escapeHTML(item.hook)}
+              </div>
+            </div>
+
+            <div style="
+              margin-bottom:12px;
+            ">
+              <strong style="
+                font-size:11px;
+                color:#64748b;
+              ">
+                📝 ساختار محتوا
+              </strong>
+
+              <div style="
+                margin-top:6px;
+                font-size:12px;
+                line-height:1.8;
+                white-space:pre-line;
+              ">
+                ${escapeHTML(item.content)}
+              </div>
+            </div>
+
+            <div style="
+              background:#050120;
+              color:#fff;
+              padding:12px;
+              border-radius:12px;
+              margin-bottom:12px;
+            ">
+              <strong style="
+                font-size:11px;
+                opacity:.7;
+              ">
+                💬 CTA
+              </strong>
+
+              <div style="
+                margin-top:5px;
+                font-size:13px;
+                line-height:1.7;
+                font-weight:700;
+              ">
+                ${escapeHTML(item.cta)}
+              </div>
+            </div>
+
+            <div style="
+              font-size:10px;
+              line-height:1.8;
+              color:#486878;
+            ">
+              ${escapeHTML(item.hashtags)}
+            </div>
+
+          </div>
+
+        `).join("")}
+
+      </div>
+
+      <div style="
+        margin-top:25px;
+        padding:18px;
+        border-radius:15px;
+        background:#f8fafc;
+        text-align:center;
+        font-size:12px;
+        line-height:2;
+        color:#64748b;
+      ">
+        ساخته شده با ${escapeHTML(config.logo_text)}
+        <br>
+        پیشنهاد: عملکرد محتوا را هفتگی بررسی و تقویم را بر اساس داده واقعی به‌روزرسانی کنید.
+      </div>
+
+    </div>
+  `;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function editAnswers() {
+
+  state.currentStep = 0;
+
+  renderQuestionnaire();
+}
+
+function restart() {
+
+  const confirmed =
+    confirm(
+      "آیا مطمئن هستید که می‌خواهید تقویم فعلی را پاک کنید؟"
+    );
+
+  if (!confirmed) return;
+
+  state = {
+    currentStep: 0,
+    answers: {},
+    generated: [],
+    loggedIn: true
+  };
+
+  localStorage.removeItem(STORAGE_KEY);
+
+  renderQuestionnaire();
+}
+
+/* =========================================================
+   SDK SUPPORT
+========================================================= */
+
+async function onConfigChange(newConfig) {
+
+  config = {
+    ...config,
+    ...newConfig
+  };
+
+  applyTheme();
+
+  if (!state.loggedIn) {
+    renderLogin();
+    return;
+  }
+
+  if (state.generated.length) {
+    renderResults();
+  } else {
+    renderQuestionnaire();
+  }
+}
+
+function applyTheme() {
+
+  const root =
+    document.documentElement;
+
+  root.style.setProperty(
+    "--primary",
+    config.primary_color || DEFAULT_CONFIG.primary_color
+  );
+
+  root.style.setProperty(
+    "--secondary",
+    config.secondary_color || DEFAULT_CONFIG.secondary_color
+  );
+
+  root.style.setProperty(
+    "--text",
+    config.text_color || DEFAULT_CONFIG.text_color
+  );
+
+  root.style.setProperty(
+    "--primary-dark",
+    config.accent_color || DEFAULT_CONFIG.accent_color
+  );
+
+  root.style.setProperty(
+    "--background",
+    config.background_color || DEFAULT_CONFIG.background_color
+  );
+
+  document.body.style.fontFamily =
+    `"${config.font_family || "Vazirmatn"}", sans-serif`;
+}
+
+const capabilities = {
+
+  recolorables: [
+    {
+      get: () => config.background_color,
+      set: value => {
+        config.background_color = value;
+        window.elementSdk?.setConfig({
+          background_color: value
+        });
+      }
+    },
+    {
+      get: () => config.secondary_color,
+      set: value => {
+        config.secondary_color = value;
+        window.elementSdk?.setConfig({
+          secondary_color: value
+        });
+      }
+    },
+    {
+      get: () => config.text_color,
+      set: value => {
+        config.text_color = value;
+        window.elementSdk?.setConfig({
+          text_color: value
+        });
+      }
+    },
+    {
+      get: () => config.primary_color,
+      set: value => {
+        config.primary_color = value;
+        window.elementSdk?.setConfig({
+          primary_color: value
+        });
+      }
+    },
+    {
+      get: () => config.accent_color,
+      set: value => {
+        config.accent_color = value;
+        window.elementSdk?.setConfig({
+          accent_color: value
+        });
       }
     }
+  ],
 
-    const capabilities = {
-      recolorables: [
-        {
-          get: () => config.background_color || defaultConfig.background_color,
-          set: (value) => {
-            config.background_color = value;
-            window.elementSdk.setConfig({ background_color: value });
-          }
-        },
-        {
-          get: () => config.secondary_color || defaultConfig.secondary_color,
-          set: (value) => {
-            config.secondary_color = value;
-            window.elementSdk.setConfig({ secondary_color: value });
-          }
-        },
-        {
-          get: () => config.text_color || defaultConfig.text_color,
-          set: (value) => {
-            config.text_color = value;
-            window.elementSdk.setConfig({ text_color: value });
-          }
-        },
-        {
-          get: () => config.primary_color || defaultConfig.primary_color,
-          set: (value) => {
-            config.primary_color = value;
-            window.elementSdk.setConfig({ primary_color: value });
-          }
-        },
-        {
-          get: () => config.accent_color || defaultConfig.accent_color,
-          set: (value) => {
-            config.accent_color = value;
-            window.elementSdk.setConfig({ accent_color: value });
-          }
-        }
-      ],
-      borderables: [],
-      fontEditable: {
-        get: () => config.font_family || defaultConfig.font_family,
-        set: (value) => {
-          config.font_family = value;
-          window.elementSdk.setConfig({ font_family: value });
-        }
-      },
-      fontSizeable: {
-        get: () => config.font_size || defaultConfig.font_size,
-        set: (value) => {
-          config.font_size = value;
-          window.elementSdk.setConfig({ font_size: value });
-        }
-      }
-    };
+  borderables: [],
 
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: () => capabilities,
-        mapToEditPanelValues: (cfg) => new Map([
-          ["app_title", cfg.app_title || defaultConfig.app_title],
-          ["login_password", cfg.login_password || defaultConfig.login_password],
-          ["logo_text", cfg.logo_text || defaultConfig.logo_text]
-        ])
+  fontEditable: {
+    get: () => config.font_family,
+    set: value => {
+      config.font_family = value;
+
+      window.elementSdk?.setConfig({
+        font_family: value
       });
     }
+  },
 
-    renderLogin();
-  </script>
-  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a7a76c74619d24e',t:'MTc2NDY3NDczMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+  fontSizeable: {
+    get: () => config.font_size,
+    set: value => {
+      config.font_size = value;
+
+      window.elementSdk?.setConfig({
+        font_size: value
+      });
+    }
+  }
+};
+
+/* =========================================================
+   INIT
+========================================================= */
+
+function initSDK() {
+
+  if (!window.elementSdk) {
+    applyTheme();
+    return;
+  }
+
+  try {
+
+    window.elementSdk.init({
+
+      defaultConfig: DEFAULT_CONFIG,
+
+      onConfigChange,
+
+      mapToCapabilities: () =>
+        capabilities,
+
+      mapToEditPanelValues: cfg =>
+        new Map([
+          [
+            "app_title",
+            cfg.app_title ||
+            DEFAULT_CONFIG.app_title
+          ],
+          [
+            "login_password",
+            cfg.login_password ||
+            DEFAULT_CONFIG.login_password
+          ],
+          [
+            "logo_text",
+            cfg.logo_text ||
+            DEFAULT_CONFIG.logo_text
+          ]
+        ])
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Element SDK initialization failed:",
+      error
+    );
+
+    applyTheme();
+  }
+}
+
+/* =========================================================
+   START
+========================================================= */
+
+loadState();
+
+initSDK();
+
+applyTheme();
+
+renderLogin();
+
+</script>
+
 </body>
 </html>
